@@ -1,0 +1,87 @@
+# Translation of elilo debconf templates to German
+# Copyright (C) Helge Kreutzmann <debian@helgefjell.de>, 2007.
+# This file is distributed under the same license as the elilo package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: elilo 4.7.6-1\n"
+"Report-Msgid-Bugs-To: bdale@gag.com\n"
+"POT-Creation-Date: 2007-03-13 08:22+0100\n"
+"PO-Revision-Date: 2007-03-07 19:21+0100\n"
+"Last-Translator: Helge Kreutzmann <debian@helgefjell.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid "Automatically run elilo?"
+msgstr "Elilo automatisch ausführen?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"It is necessary to run /usr/sbin/elilo to install the new elilo binary into "
+"the EFI partition."
+msgstr ""
+"Es ist notwendig, /usr/sbin/elilo auszuführen, um das neue Elilo-Programm in "
+"die EFI-Partition zu installieren."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"WARNING: This procedure will write data into the debian directory of the EFI "
+"disk partition, possibly overwriting files installed there by hand."
+msgstr ""
+"WARNUNG: Diese Prozedur wird Daten in das Debian-Verzeichnis der EFI-Platten-"
+"Partition schreiben und dabei möglicherweise Dateien überschreiben, die dort "
+"manuell installiert wurden."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"Not installing the new elilo binary on the EFI disk partition may leave the "
+"system in an unbootable state.  Alternatives to automatic updating of the "
+"partition include running /usr/sbin/elilo by hand, or installing the new /"
+"usr/lib/elilo/elilo.efi executable into the EFI disk partition manually."
+msgstr ""
+"Wird das neue Elilo-Programm nicht auf die EFI-Platten-Partition "
+"installiert, könnte Ihr System nicht mehr starten. Statt der automatischen "
+"Aktualisierung der Partition können Sie auch selbst /usr/sbin/elilo "
+"ausführen oder manuell das neue /usr/lib/elilo/elilo.efi-Programm auf die "
+"EFI-Platten-Partition installieren."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid "Reformat and reload EFI partition?"
+msgstr "EFI-Partition neu formatieren und neu laden?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"The structure of files in the EFI disk partition has changed since pre-3.2 "
+"versions of the elilo package.  The EFI boot manager entry for Debian needs "
+"to be updated to reflect these changes."
+msgstr ""
+"Die Struktur der Dateien in der EFI-Platten-Partition hat sich seit pre-3.2-"
+"Versionen des Elilo-Pakets geändert. Der EFI-Bootmanager-Eintrag für Debian "
+"muss aktualisiert werden, um diese Änderungen zu berücksichtigen."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"In most cases, if no manual changes to the EFI partition content need to be "
+"preserved, this update can be handled automatically."
+msgstr ""
+"In den meisten Fällen, falls keine manuellen Änderungen am Inhalt der EFI-"
+"Partition erhalten bleiben müssen, kann dies von dieser Aktualisierung "
+"automatisch durchgeführt werden."

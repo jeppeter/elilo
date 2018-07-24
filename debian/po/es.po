@@ -1,0 +1,118 @@
+# elilo po-debconf translation to Spanish.
+# Copyright (C) 2007.
+# This file is distributed under the same license as the elilo package.
+#
+#  Changes:
+# - Initial translation
+#       Elías A.M. <rumbo_4000@yahoo.es>
+#
+# - Last revision:
+#       Fernando González de Requena <fgrequena@gmail.com>, 2009.
+#
+#
+#  Traductores, si no conoce el formato PO, merece la pena leer la 
+#  documentación de gettext, especialmente las secciones dedicadas a este
+#  formato, por ejemplo ejecutando:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+# Equipo de traducción al español, por favor lean antes de traducir
+# los siguientes documentos:
+#
+# - El proyecto de traducción de Debian al español
+#   http://www.debian.org/intl/spanish/
+#   especialmente las notas y normas de traducción en
+#   http://www.debian.org/intl/spanish/notas
+#
+# - La guía de traducción de po's de debconf:
+#   /usr/share/doc/po-debconf/README-trans
+#   o http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+# Si tiene dudas o consultas sobre esta traducción consulte con el último
+# traductor (campo Last-Translator) y ponga en copia a la lista de
+# traducción de Debian al español (<debian-l10n-spanish@lists.debian.org>)
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: elilo 3.8-1\n"
+"Report-Msgid-Bugs-To: bdale@gag.com\n"
+"POT-Creation-Date: 2007-03-13 08:22+0100\n"
+"PO-Revision-Date: 2009-01-10 17:28+0200\n"
+"Last-Translator: Fernando González de Requena <fgrequena@gmail.com>\n"
+"Language-Team: Spanish <debian-l10n-spanish@lists.debian.org\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid "Automatically run elilo?"
+msgstr "¿Desea ejecutar automáticamente elilo?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"It is necessary to run /usr/sbin/elilo to install the new elilo binary into "
+"the EFI partition."
+msgstr ""
+"Es necesario ejecutar «/usr/sbin/elilo» para instalar el nuevo archivo "
+"binario de elilo en la partición EFI."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"WARNING: This procedure will write data into the debian directory of the EFI "
+"disk partition, possibly overwriting files installed there by hand."
+msgstr ""
+"AVISO: Este procedimiento escribirá datos en el directorio «debian» de la "
+"partición EFI, y puede sobreescribir los archivos que se hayan instalado "
+"allí manualmente."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"Not installing the new elilo binary on the EFI disk partition may leave the "
+"system in an unbootable state.  Alternatives to automatic updating of the "
+"partition include running /usr/sbin/elilo by hand, or installing the new /"
+"usr/lib/elilo/elilo.efi executable into the EFI disk partition manually."
+msgstr ""
+"Si no instala el nuevo archivo binario de elilo en la partición EFI es "
+"posible que el sistema no pueda ser arrancado. Las alternativas a la "
+"actualización automática de la partición son ejecutar manualmente «/usr/sbin/"
+"elilo», o bien colocar manualmente el nuevo archivo ejecutable «/usr/lib/"
+"elilo/elilo.efi» en la partición EFI."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid "Reformat and reload EFI partition?"
+msgstr "¿Desea reformatear y volver a cargar la partición EFI?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"The structure of files in the EFI disk partition has changed since pre-3.2 "
+"versions of the elilo package.  The EFI boot manager entry for Debian needs "
+"to be updated to reflect these changes."
+msgstr ""
+"La estructura de archivos en la partición EFI ha cambiado desde las "
+"versiones anteriores a la versión 3.2 del paquete elilo. Es necesario "
+"actualizar la entrada para Debian en el gestor de arranque de EFI para "
+"reflejar estos cambios."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"In most cases, if no manual changes to the EFI partition content need to be "
+"preserved, this update can be handled automatically."
+msgstr ""
+"En la mayoría de los casos esta actualización se puede realizar "
+"automáticamente, si no se han hecho cambios a mano en el contenido de la "
+"partición EFI que sea necesario conservar. "

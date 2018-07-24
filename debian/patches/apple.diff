@@ -1,0 +1,348 @@
+Description: Add nasty hacks for Apple systems
+ Switch to text mode on startup.
+ .
+ Pass the framebuffer size to the system on boot.
+ .
+ Automatically set legacy-free option on ia32 Apple systems.
+Author: Matthew Garrett <mjg59@srcf.ucam.org>
+Author: Colin Watson <cjwatson@ubuntu.com>
+Forwarded: no
+Last-Update: 2011-08-22
+
+Index: b/Make.defaults
+===================================================================
+--- a/Make.defaults
++++ b/Make.defaults
+@@ -69,7 +69,7 @@
+ 
+ OPTIMFLAGS = -O2 
+ DEBUGFLAGS = -Wall
+-CFLAGS     = $(ARCH3264) $(OPTIMFLAGS) -fpic -fshort-wchar $(DEBUGFLAGS)
++CFLAGS     = $(ARCH3264) $(OPTIMFLAGS) -nostdlib -fpic -fshort-wchar $(DEBUGFLAGS)
+ ASFLAGS    = $(ARCH3264)
+ LDFLAGS	   = -nostdlib -znocombreloc
+ INSTALL	   = install
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -67,7 +67,7 @@
+ FILES = elilo.o getopt.o strops.o loader.o \
+         fileops.o util.o vars.o alloc.o chooser.o  \
+ 	config.o initrd.o alternate.o bootparams.o \
+-	gunzip.o console.o fs/fs.o \
++	gunzip.o console.o apple.o fs/fs.o \
+ 	choosers/choosers.o \
+ 	devschemes/devschemes.o \
+ 	$(ARCH)/sysdeps.o \
+Index: b/apple.c
+===================================================================
+--- /dev/null
++++ b/apple.c
+@@ -0,0 +1,131 @@
++/*
++ *  Copyright (C) 2006 Matthew Garrett
++ *
++ * This file is part of the ELILO, the EFI Linux boot loader.
++ *
++ *  ELILO is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2, or (at your option)
++ *  any later version.
++ *
++ *  ELILO is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with ELILO; see the file COPYING.  If not, write to the Free
++ *  Software Foundation, 59 Temple Place - Suite 330, Boston, MA
++ *  02111-1307, USA.
++ *
++ * Please check out the elilo.txt for complete documentation on how
++ * to use this program.
++ */
++
++#include <efi.h>
++#include <efilib.h>
++
++#include "elilo.h"
++#include "graphics.h"
++
++extern EFI_SYSTEM_TABLE *systab;
++extern CHAR16 *apple_fudge_cmdline;
++
++void *
++get_protocol_handler(EFI_GUID protocol)
++{
++	EFI_HANDLE *handle;
++	EFI_STATUS status;
++	UINTN size;
++	void *interface;
++
++	status = BS->LocateHandle(ByProtocol, &protocol, NULL, &size, NULL);
++
++	if (size==0) {
++		ERR_PRT((L"Could not locate a device", status));
++		return NULL;
++	}
++
++	if (size>=1000)
++		size = 1000;
++
++	handle = (EFI_HANDLE *)alloc(size, EfiLoaderData);
++
++	if (handle == NULL) {
++                ERR_PRT((L"failed to allocate handle table"));
++                return NULL;
++	}
++
++ locate:
++	status = BS->LocateHandle(ByProtocol, &protocol, NULL, &size, handle);
++
++	if (status == EFI_BUFFER_TOO_SMALL) {
++		handle = (EFI_HANDLE *)alloc(size, EfiLoaderData);
++		goto locate;
++	}
++
++	if (status != EFI_SUCCESS) {
++                ERR_PRT((L"failed to get handles: %r", status));
++		ERR_PRT((L"%d",size));
++                free(handle);
++                return NULL;
++        }
++
++	status = BS->HandleProtocol(handle[0], &protocol, (void **)&interface);
++
++	if (EFI_ERROR(status)) {
++                ERR_PRT((L"Not able find the interface"));
++		free (handle);
++                return NULL;
++        }
++
++	
++	
++	free (handle);
++	return interface;
++}
++
++
++EFI_STATUS
++apple_fudge()
++{
++	EFI_GUID UGAProtocol = UGA_DRAW_PROTOCOL;
++	EFI_GUID ConsoleProtocol = CONSOLE_CONTROL_PROTOCOL;
++	EFI_UGA_DRAW_INTERFACE *uga_interface = 0;
++	EFI_CONSOLE_CONTROL_INTERFACE *console_interface = 0;
++	EFI_CONSOLE_CONTROL_SCREEN_MODE current_mode;
++	UINT32 horiz, vert, depth, refresh;
++
++	console_interface = get_protocol_handler(ConsoleProtocol);
++
++	if (console_interface) {
++		console_interface->GetMode(console_interface, &current_mode, NULL, NULL);
++
++		if (current_mode == EfiConsoleControlScreenGraphics)
++			console_interface->SetMode(console_interface, EfiConsoleControlScreenText);
++			
++		free (console_interface);
++	} else
++		ERR_PRT((L"Unable to find console interface\n"));
++
++
++	uga_interface = get_protocol_handler(UGAProtocol);
++	
++	if (uga_interface) {
++		uga_interface->GetMode(uga_interface, &horiz, &vert, &depth, &refresh);
++
++		free (uga_interface);
++	} else 
++		ERR_PRT((L"Unable to find UGA interface\n"));
++
++	apple_fudge_cmdline = alloc(76, EfiLoaderData);
++	
++	SPrint(apple_fudge_cmdline, 76, L"video=imacfb:height=%d,width=%d", vert, horiz);
++
++#ifdef CONFIG_ia32
++	ia32_set_legacy_free_boot(1);
++#endif
++
++	return 0;
++}
++	
+Index: b/elilo.c
+===================================================================
+--- a/elilo.c
++++ b/elilo.c
+@@ -52,6 +52,8 @@
+ 
+ EFI_SYSTEM_TABLE *systab;	/* pointer to EFI system table */
+ 
++CHAR16 *apple_fudge_cmdline = 0;
++
+ extern INTN wait_timeout (UINTN);
+ 
+ /*
+@@ -242,6 +244,9 @@
+ do_launch:
+ 	r =subst_vars(cmdline_tmp, cmdline, CMDLINE_MAXLEN);
+ 
++	if (apple_fudge_cmdline)
++		SPrint (cmdline, CMDLINE_MAXLEN, L"%s %s", apple_fudge_cmdline, cmdline);
++
+ 	VERB_PRT(3, Print(L"final cmdline(%d): %s\n", r, cmdline));
+ 
+ 	/* Give user time to see the output before launch */
+@@ -738,7 +743,10 @@
+ 
+ 	ret = EFI_LOAD_ERROR;
+ 
++	/* Is this an Apple? If so, we need to do some fixups */
+ 
++	if (!StrCmp(systab->FirmwareVendor,L"Apple"))
++		apple_fudge();
+ 
+ 	/* set default timeout if going interactive */
+ 	if ((elilo_opt.prompt && elilo_opt.timeout == 0)) {
+Index: b/graphics.h
+===================================================================
+--- /dev/null
++++ b/graphics.h
+@@ -0,0 +1,107 @@
++#ifndef UGA_H
++#define UGA_H
++
++#define UGA_DRAW_PROTOCOL \
++{ 0x982c298b,0xf4fa,0x41cb,{ 0xb8,0x38,0x77,0xaa,0x68,0x8f,0xb8,0x39 } }
++
++struct _EFI_UGA_DRAW_INTERFACE;
++
++typedef
++EFI_STATUS
++(EFIAPI *EFI_UGA_DRAW_PROTOCOL_GET_MODE) (
++	IN struct _EFI_UGA_DRAW_INTERFACE	*This,
++	OUT UINT32 	*HorizontalResolution,
++	OUT UINT32	*VerticalResolution,
++	OUT UINT32	*ColorDepth,
++	OUT UINT32      *RefreshRate
++	);
++
++typedef
++EFI_STATUS
++(EFIAPI *EFI_UGA_DRAW_PROTOCOL_SET_MODE) (
++	IN struct _EFI_UGA_DRAW_INTERFACE *This,
++	IN UINT32	HorizontalResolution,
++	IN UINT32	VerticalResolution,
++	IN UINT32	ColorDepth,
++	IN UINT32       RefreshRate
++	);
++
++typedef struct {
++	UINT8   Blue;
++	UINT8   Green;
++	UINT8   Red;
++	UINT8   Reserved;
++} EFI_UGA_PIXEL;
++typedef enum {
++	EfiUgaVideoFill,
++	EfiUgaVideoToBltBuffer,
++	EfiUgaBltBufferToVideo,
++	EfiUgaVideoToVideo,
++	EfiUgaBltMax
++} EFI_UGA_BLT_OPERATION;
++
++typedef
++EFI_STATUS
++(EFIAPI *EFI_UGA_DRAW_PROTOCOL_BLT) (
++	IN struct _EFI_UGA_DRAW_INTERFACE	*This,
++	IN OUT EFI_UGA_PIXEL	*BltBuffer,
++	IN EFI_UGA_BLT_OPERATION	BltOperation,
++	IN UINTN	SourceX,
++	IN UINTN	SourceY,
++	IN UINTN	DestinationX,
++	IN UINTN	DestinationY,
++	IN UINTN	Width,
++	IN UINTN	Height,
++	IN UINTN      Delta 
++	);
++
++typedef struct _EFI_UGA_DRAW_INTERFACE {
++	EFI_UGA_DRAW_PROTOCOL_GET_MODE GetMode;
++	EFI_UGA_DRAW_PROTOCOL_SET_MODE SetMode;
++	EFI_UGA_DRAW_PROTOCOL_BLT Blt;
++} EFI_UGA_DRAW_INTERFACE;
++
++/* Console control */
++
++#define CONSOLE_CONTROL_PROTOCOL \
++  { 0xf42f7782, 0x12e, 0x4c12,{ 0x99, 0x56, 0x49, 0xf9, 0x43, 0x4, 0xf7, 0x21} }
++
++struct _EFI_CONSOLE_CONTROL_INTERFACE;
++
++typedef enum {
++	EfiConsoleControlScreenText,
++	EfiConsoleControlScreenGraphics,
++	EfiConsoleControlScreenMaxValue
++} EFI_CONSOLE_CONTROL_SCREEN_MODE;
++
++typedef
++EFI_STATUS
++(EFIAPI *EFI_CONSOLE_CONTROL_PROTOCOL_GET_MODE) (
++	IN  struct _EFI_CONSOLE_CONTROL_INTERFACE      *This,
++	OUT EFI_CONSOLE_CONTROL_SCREEN_MODE   *Mode,
++	OUT BOOLEAN                           *UgaExists,
++	OUT BOOLEAN                           *StdInLocked
++	);
++
++typedef
++EFI_STATUS
++(EFIAPI *EFI_CONSOLE_CONTROL_PROTOCOL_SET_MODE) (
++	IN  struct _EFI_CONSOLE_CONTROL_INTERFACE      *This,
++	OUT EFI_CONSOLE_CONTROL_SCREEN_MODE   Mode
++	);
++
++typedef
++EFI_STATUS
++(EFIAPI *EFI_CONSOLE_CONTROL_PROTOCOL_LOCK_STD_IN) (
++	IN  struct _EFI_CONSOLE_CONTROL_INTERFACE      *This,
++	IN CHAR16                             *Password
++	);
++
++typedef struct _EFI_CONSOLE_CONTROL_INTERFACE {
++	EFI_CONSOLE_CONTROL_PROTOCOL_GET_MODE           GetMode;
++	EFI_CONSOLE_CONTROL_PROTOCOL_SET_MODE           SetMode;
++	EFI_CONSOLE_CONTROL_PROTOCOL_LOCK_STD_IN        LockStdIn;
++} EFI_CONSOLE_CONTROL_INTERFACE;
++
++
++#endif /* UGA_H */
+Index: b/ia32/config.c
+===================================================================
+--- a/ia32/config.c
++++ b/ia32/config.c
+@@ -82,6 +82,12 @@
+ 	return ia32_gconf.legacy_free_boot ? 1 : 0;
+ }
+ 
++VOID
++ia32_set_legacy_free_boot(INTN legacy_free)
++{
++	ia32_gconf.legacy_free_boot = legacy_free;
++}
++
+ INTN
+ sysdeps_register_options(VOID)
+ {
+Index: b/ia32/sysdeps.h
+===================================================================
+--- a/ia32/sysdeps.h
++++ b/ia32/sysdeps.h
+@@ -359,6 +359,7 @@
+ extern UINTN rmswitch_size;
+ 
+ extern INTN ia32_use_legacy_free_boot();
++extern VOID ia32_set_legacy_free_boot(INTN);
+ 
+ /*
+  * How to jump to kernel code

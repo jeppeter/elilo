@@ -1,0 +1,87 @@
+# Galician translation of elilo's debconf templates
+# This file is distributed under the same license as the elilo package.
+# Jacobo Tarrio <jtarrio@debian.org>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: elilo\n"
+"Report-Msgid-Bugs-To: bdale@gag.com\n"
+"POT-Creation-Date: 2007-03-13 08:22+0100\n"
+"PO-Revision-Date: 2007-03-09 09:49+0100\n"
+"Last-Translator: Jacobo Tarrio <jtarrio@debian.org>\n"
+"Language-Team: Galician <proxecto@trasno.net>\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid "Automatically run elilo?"
+msgstr "¿Executar elilo automaticamente?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"It is necessary to run /usr/sbin/elilo to install the new elilo binary into "
+"the EFI partition."
+msgstr ""
+"É necesario executar /usr/sbin/elilo para instalar o novo binario de elilo "
+"na partición EFI."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"WARNING: This procedure will write data into the debian directory of the EFI "
+"disk partition, possibly overwriting files installed there by hand."
+msgstr ""
+"AVISO: Este procedemento ha gravar os datos no directorio debian da "
+"partición de disco EFI, posiblemente sobrescribindo os ficheiros que teña "
+"instalados alí á man."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"Not installing the new elilo binary on the EFI disk partition may leave the "
+"system in an unbootable state.  Alternatives to automatic updating of the "
+"partition include running /usr/sbin/elilo by hand, or installing the new /"
+"usr/lib/elilo/elilo.efi executable into the EFI disk partition manually."
+msgstr ""
+"Se non instala o novo binario de elilo na partición de disco EFI pode deixar "
+"o sistema nun estado no que non se pode iniciar. As alternativas á "
+"actualización automática da partición inclúen executar /usr/sbin/elilo á "
+"man, ou instalar o novo executable /usr/lib/elilo/elilo.efi na partición de "
+"disco EFI á man."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid "Reformat and reload EFI partition?"
+msgstr "¿Reformatar e recargar a partición EFI?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"The structure of files in the EFI disk partition has changed since pre-3.2 "
+"versions of the elilo package.  The EFI boot manager entry for Debian needs "
+"to be updated to reflect these changes."
+msgstr ""
+"A estructura dos ficheiros na partición de disco EFI cambiou desde as "
+"versións anteriores á 3.2 do paquete elilo. É necesario actualiar a entrada "
+"para Debian do xestor de inicio EFI para reflectir os cambios."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"In most cases, if no manual changes to the EFI partition content need to be "
+"preserved, this update can be handled automatically."
+msgstr ""
+"Na maioría dos casos, se non hai que conservar ningún cambio manual no "
+"contido da partición EFI, pódese xestionar automaticamente esta "
+"actualización."

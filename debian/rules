@@ -1,0 +1,106 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+buildarch := $(shell dpkg-architecture -qDEB_BUILD_ARCH)
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+build-stamp:
+	dh_testdir
+
+ifeq ($(buildarch), i386)
+	mkdir debian/build64
+	$(MAKE) -C debian/build64 -f ../../Makefile SRCDIR=../.. ARCH=x86_64
+endif
+
+ifeq ($(buildarch), amd64)
+	mkdir debian/build32
+	$(MAKE) -C debian/build32 -f ../../Makefile SRCDIR=../.. ARCH=ia32 
+endif
+
+	$(MAKE)
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	[ ! -f Makefile ] || $(MAKE) clean
+
+	rm -rf debian/build32 debian/build64
+
+	debconf-updatepo
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+ifeq ($(buildarch), i386)
+	mkdir -p debian/elilo/usr/lib64/elilo
+	cp debian/build64/elilo.efi debian/elilo/usr/lib64/elilo/elilo.efi
+	chmod 0644 debian/elilo/usr/lib64/elilo/elilo.efi
+endif
+
+ifeq ($(buildarch), amd64)
+	mkdir -p debian/elilo/usr/lib32/elilo
+	cp debian/build32/elilo.efi debian/elilo/usr/lib32/elilo/elilo.efi
+	chmod 0644 debian/elilo/usr/lib32/elilo/elilo.efi
+endif
+
+	cp elilo.efi debian/elilo/usr/lib/elilo/elilo.efi
+	chmod 0644 debian/elilo/usr/lib/elilo/elilo.efi
+
+	# dynamically determine version string from changelog
+	sed s/'##VERSION##'/"`IFS=\"()\" read pkg ver other < \
+		debian/changelog && echo $$ver`"/ < debian/elilo.sh > \
+		debian/elilo/usr/sbin/elilo
+
+	chmod 0755 debian/elilo/usr/sbin/elilo
+	cp tools/eliloalt debian/elilo/usr/sbin/eliloalt
+	chmod 0755 debian/elilo/usr/sbin/eliloalt
+
+	cp debian/elilo.initramfs-post-update \
+		debian/elilo/etc/initramfs/post-update.d/elilo
+	cp debian/elilo.kernel-postinst \
+		debian/elilo/etc/kernel/postinst.d/zz-elilo
+	cp debian/elilo.kernel-postrm \
+		debian/elilo/etc/kernel/postrm.d/zz-elilo
+	chmod 755 debian/elilo/etc/initramfs/*.d/* debian/elilo/etc/kernel/*.d/*
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installdebconf
+	dh_installexamples examples/netboot examples/textmenu_chooser
+	cp debian/sys2ansi.pl \
+		debian/elilo/usr/share/doc/elilo/examples/textmenu_chooser/
+	dh_installmenu
+	dh_installcron
+	dh_installman debian/elilo.8 debian/eliloalt.8
+	dh_installinfo
+	dh_installchangelogs ChangeLog
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build-indep build-arch build clean binary-indep binary-arch binary install

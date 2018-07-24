@@ -1,0 +1,106 @@
+
+                        /usr/sbin/elilo documentation
+
+There are two parts to elilo:
+
+/usr/lib/elilo/elilo.efi   The bootloader itself.
+/usr/sbin/elilo            Utility to install/update a bootload configuration.
+
+This document describes /usr/sbin/elilo; for information on elilo.efi, or
+the configuration file format, please refer to /usr/doc/elilo/elilo.txt.
+
+
+elilo option summary:
+
+  -b, --boot                 set bootstrap partition device [ -b /dev/sda1 ]
+  -i, --install              pathname to the actual bootloader binary
+                               default: /usr/{local/}lib/elilo/elilo.efi
+  -C, --config               use alternate configuration file [ -C config_file ]
+      --autoconf             auto-generate a /etc/elilo.conf
+      --efiboot              elilo auto configuration: create an efi boot
+                               manager entry for elilo
+      --timeout              elilo auto configuration: sets the time elilo
+                               will wait for user input before booting default
+                               image default: 20 (2 seconds)
+      --image                elilo auto configuration: sets the path to the
+                               kernel image. default: /vmlinuz
+      --label                elilo auto configuration: sets the image label
+                               default: Linux
+      --root                 elilo auto configuration: sets the root device
+                               default: /dev/sda3
+      --format               create a new FAT filesystem on the boot partition
+  -v, --verbose              make elilo more verbose
+      --debug                print boring junk only useful for debugging
+  -h, --help                 display this help and exit
+  -V, --version              output version information and exit
+
+
+The primary function of elilo is to copy files necessary for booting
+Ubuntu from the main filesystem to a subdirectory /EFI/ubuntu
+on the boot partition.  In addition, elilo can create a default
+configuration file, /etc/elilo.conf, and can invoke efibootmgr to create
+an entry in the EFI Boot Manager menu such that a system will autoboot
+in to Ubuntu on power up.
+
+It is important to note that elilo will recreate the /EFI/ubuntu
+directory on your boot partition every time it is run, so any local
+changes you might have made under that direcotry will be lost.  The
+intention of elilo is to hide the boot partition from the user; the
+partition is not normally mounted so the user is unlikely to make local
+modifications.
+
+elilo does various checks on the partition (e.g. must pass dosfsck, must
+be a partition rather than a whole disk, must not be mounted, etc.)
+before overwriting it.  Invoking it with --format will run mkdosfs on
+the partition; this is generally not advisable, if the partition may be
+shared with other operating systems.
+
+
+/etc/elilo.conf generation:
+
+This is generally only used during system installation.  Typically elilo.conf
+will already exist, and is not modified by elilo.  To generate a new config
+file, you must specify --autoconf, along with any of the other auto
+configuration options necessary to override defaults.  Defaults are given
+in the option summary above.
+
+
+Invoking efibootmgr:
+
+--efiboot will cause elilo to run efibootmgr and create a default boot entry
+in the EFI Boot Manager menu called "Ubuntu".  Any other entries
+of that name are assumed to be left over from some previous installation and
+are deleted.  If the descriptions for the first two boot mansger entries
+start with strings "floppy" and "CD" or "DVD", then the new boot entry
+is created as the third entry, so that the system will still boot
+exchangeable media first by default.
+
+
+elilo.conf extensions:
+
+elilo requires a couple of extra parameters in elilo.conf that elio.efi does
+not currently support.  They are:
+
+install=<path to elilo.efi>  # default /usr/lib/elilo/elilo.efi
+boot=<boot partition>        # /dev/sda1
+
+These are needed so that a normal run of elilo with no parameters can find 
+the elilo.efi binary and boot partition in order to rebuild it.
+
+
+Boot partition creation:
+
+Once the /EFI/ubuntu directory has been created, elilo copies various
+files to it.  These include elilo.efi, elilo.conf, and certain kernel
+and ramdisk images referenced by elilo.conf.  elilo.conf is modified as
+it is copied, to comment out the install= and boot= lines so as not to
+confuse elilo.efi, and to prefix any file paths with /EFI/ubuntu.  All
+kernel and initrd images that are referenced via standard UNIX paths are
+copied to the boot partition, so that elilo.efi can find them easily.
+Any paths containing a ':' are assumed to be EFI device paths, and as
+such are not copied.  Device path names depend on features of elilo.efi,
+but a typical path might be "scsi1:/vmlinux-2.4.7".  It is hoped that
+eventually a sufficiently robust device path naming scheme will be
+devised, and then devices paths will be used throughout, and it will no
+longer be necessary to copy images to the boot partition.
+

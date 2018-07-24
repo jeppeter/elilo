@@ -1,0 +1,266 @@
+diff --git a/Makefile b/Makefile
+index f0efebd..9d82cbf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -25,15 +25,19 @@
+ # to use this program.
+ #
+ 
+-include Make.defaults
+-TOPDIR=.
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/Make.defaults
++TOPDIR = $(SRCDIR)
+ 
+ 
+ CRTOBJS       = $(EFICRT0)/crt0-efi-$(ARCH).o
+ LDSCRIPT      = $(EFICRT0)/elf_$(ARCH)_efi.lds
+ 
+ LDFLAGS	     += -T $(LDSCRIPT) -shared -Bsymbolic -L$(EFILIB) -L$(GNUEFILIB) $(CRTOBJS)
+-LOADLIBES     = -lefi -lgnuefi $(shell $(CC) -print-libgcc-file-name)
++LOADLIBES     = -lefi -lgnuefi $(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
+ FORMAT        = efi-app-$(ARCH)
+ 
+ FILESYSTEM    =
+@@ -87,7 +91,8 @@ fileops.o : Make.defaults
+ chooser.o : Make.defaults
+ 
+ $(SUBDIRS): dummy
+-	$(MAKE) -C $@
++	mkdir -p $@
++	$(MAKE) -C $@ -f $(SRCDIR)/../$@/Makefile SRCDIR=$(SRCDIR)/../$@ ARCH=$(ARCH)
+ 
+ dummy:
+ 
+@@ -106,4 +111,4 @@ ifeq ($(GCC_VERSION),2)
+ 	@exit 1
+ endif
+ 
+-include Make.rules
++include $(SRCDIR)/Make.rules
+diff --git a/choosers/Makefile b/choosers/Makefile
+index 9915f48..85d31c7 100644
+--- a/choosers/Makefile
++++ b/choosers/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=
+ 
+@@ -47,7 +52,8 @@ $(TARGET): $(TOPDIR)/Make.defaults $(FILES)
+ 		echo "You need to define at least one chooser in Make.defaults"; \
+ 		exit 1; \
+ 	fi
+-	$(LD) -o $@ -r $(FILES)
++	$(LD) $(LD3264) -o $@ -r $(FILES)
++
+ 
+ clean:
+ 	$(RM) -f $(TARGET) $(FILES)
+diff --git a/devschemes/Makefile b/devschemes/Makefile
+index 6ac05af..5328cb1 100644
+--- a/devschemes/Makefile
++++ b/devschemes/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=simple.o
+ 
+@@ -40,7 +45,7 @@ all: $(TARGET)
+ #      without doing make clean.
+ #
+ $(TARGET): $(FILES)
+-	$(LD) -r -o $@ $(FILES)
++	$(LD) $(LD3264) -r -o $@ $(FILES)
+ 
+ clean:
+ 	$(RM) -f $(TARGET) $(FILES)
+diff --git a/fs/Makefile b/fs/Makefile
+index 8e422b2..0bb303f 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=
+ ifeq ($(CONFIG_localfs),y)
+@@ -59,7 +64,7 @@ $(TARGET): $(TOPDIR)/Make.defaults $(FILES)
+ 		echo "You need to define at least one filesystem in Make.defaults"; \
+ 		exit 1; \
+ 	fi
+-	$(LD) -r -o $@ $(FILES)
++	$(LD) $(LD3264) -r -o $@ $(FILES)
+ 
+ clean:
+ 	$(RM) -f $(TARGET) $(FILES)
+diff --git a/ia32/Makefile b/ia32/Makefile
+index 353ae67..c5f421b 100644
+--- a/ia32/Makefile
++++ b/ia32/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=system.o config.o bzimage.o plain_loader.o gzip_loader.o gzip.o
+ 
+@@ -37,13 +42,13 @@ all: $(TARGET)
+ system.o: rmswitch.h
+ 
+ rmswitch.h: bin_to_h.c rmswitch.S
+-	$(CC) -o bin_to_h bin_to_h.c
+-	$(AS) -o rmswitch.o rmswitch.S
++	$(CC) -o bin_to_h $(SRCDIR)/bin_to_h.c
++	$(AS) -o rmswitch.o $(SRCDIR)/rmswitch.S
+ 	$(LD) -Ttext 0x0 -s --oformat binary -o rmswitch rmswitch.o
+ 	./bin_to_h <rmswitch >rmswitch.h
+ 
+ $(TARGET): $(FILES)
+-	$(LD) -r -o $@ $(FILES)
++	$(LD) $(LD3264) -r -o $@ $(FILES)
+ 
+ clean:
+ 	$(RM) -f $(TARGET) $(FILES)
+diff --git a/ia64/Makefile b/ia64/Makefile
+index a243d0f..bee0a2b 100644
+--- a/ia64/Makefile
++++ b/ia64/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=system.o config.o fpswa.o plain_loader.o gzip_loader.o \
+       gzip.o memset.o memcpy.o setjmp.o longjmp.o
+diff --git a/tools/Makefile b/tools/Makefile
+index 8858224..97083d7 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=eliloalt.o
+ TARGET=eliloalt
+diff --git a/x86_64/Makefile b/x86_64/Makefile
+index 4af4b8d..7ade312 100644
+--- a/x86_64/Makefile
++++ b/x86_64/Makefile
+@@ -23,10 +23,15 @@
+ # to use this program.
+ #
+ 
+-include ../Make.defaults
+-include ../Make.rules
++SRCDIR = .
++
++VPATH = $(SRCDIR)
++
++include $(SRCDIR)/../Make.defaults
++include $(SRCDIR)/../Make.rules
++
++TOPDIR=$(SRCDIR)/..
+ 
+-TOPDIR=$(CDIR)/..
+ 
+ FILES=system.o config.o bzimage.o plain_loader.o gzip_loader.o gzip.o
+ #FILES=system.o config.o plain_loader.o
+@@ -38,13 +43,13 @@ all: $(TARGET)
+ system.o: rmswitch.h
+ 
+ rmswitch.h: bin_to_h.c rmswitch.S
+-	$(CC) -o bin_to_h bin_to_h.c
+-	$(AS) -o rmswitch.o rmswitch.S
++	$(CC) -o bin_to_h $(SRCDIR)/bin_to_h.c
++	$(AS) -o rmswitch.o $(SRCDIR)/rmswitch.S
+ 	$(LD) -Ttext 0x0 -s --oformat binary -o rmswitch rmswitch.o
+ 	./bin_to_h <rmswitch >rmswitch.h
+ 
+ $(TARGET): $(FILES)
+-	$(LD) -r -o $@ $(FILES)
++	$(LD) $(LD3264) -r -o $@ $(FILES)
+ 
+ clean:
+ 	$(RM) -f $(TARGET) $(FILES)

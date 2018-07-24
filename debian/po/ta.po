@@ -1,0 +1,84 @@
+# translation of elilo.po to TAMIL
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: elilo\n"
+"Report-Msgid-Bugs-To: bdale@gag.com\n"
+"POT-Creation-Date: 2007-03-13 08:22+0100\n"
+"PO-Revision-Date: 2007-03-09 17:24+0530\n"
+"Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
+"Language-Team: TAMIL <ubuntu-l10n-tam@lists.ubuntu.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid "Automatically run elilo?"
+msgstr "ஈலிலோவை தனியங்கியாக இயக்கவா?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"It is necessary to run /usr/sbin/elilo to install the new elilo binary into "
+"the EFI partition."
+msgstr "ஈஎப்ஃஐ பகிர்வில் புதிய ஈலிலோ இருமத்தை நிறுவ /usr/sbin/elilo ஐ இயக்க வேண்டும்."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"WARNING: This procedure will write data into the debian directory of the EFI "
+"disk partition, possibly overwriting files installed there by hand."
+msgstr ""
+"ஈஎப்ஃஐ பகிர்வில் உள்ள டெபியன் அடைவில் தரவு எழுதப் படும், அனேகமாக கைமுறையாக அங்கு "
+"நிறுவப்பட்ட கோப்புகளை அழித்துவிடும் என அறிக."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"Not installing the new elilo binary on the EFI disk partition may leave the "
+"system in an unbootable state.  Alternatives to automatic updating of the "
+"partition include running /usr/sbin/elilo by hand, or installing the new /"
+"usr/lib/elilo/elilo.efi executable into the EFI disk partition manually."
+msgstr ""
+"ஈஎப்ஃஐ பகிர்வில் புதிய ஈலிலோ இருமத்தை நிறுவாமல் இருத்தல் உங்கள் கணினியை துவக்க "
+"முடியாமல் செய்யக் கூடும். தானியங்கி இற்றைப் படுத்தலுக்கு மாற்று கைமுறையாக /usr/sbin/"
+"elilo ஐ இயக்குவது அல்லது புதிய /usr/lib/elilo/elilo.efi செயலியை கைமுறையாக "
+"ஈஎப்ஃஐ பகிர்வில் நிறுவுதல்."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid "Reformat and reload EFI partition?"
+msgstr "ஈஎப்ஃஐ பகிர்வை துடைத்து ஒழுங்கு செய்து மீளேற்றம் செய்யவா?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"The structure of files in the EFI disk partition has changed since pre-3.2 "
+"versions of the elilo package.  The EFI boot manager entry for Debian needs "
+"to be updated to reflect these changes."
+msgstr ""
+"ஈஎப்ஃஐ பகிர்வில் கோப்பு அடுக்கு முறை ஈலிலோ 3.2 பதிப்பிற்கு முன் இருந்ததை விட "
+"மாறிவிட்டது. டெபியனுக்கான ஈஎப்ஃஐ பகிர்வு துவக்க மேலாளர் உள்ளீடு இந்த மாறுதல்களை "
+"பிரதிபலிக்க இற்றைப் படுத்தப் பட வேண்டும்."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"In most cases, if no manual changes to the EFI partition content need to be "
+"preserved, this update can be handled automatically."
+msgstr ""
+"அனேகமாக ஈஎப்ஃஐ பகிர்வில் உள்ள தரவு பாதுகாக்கப் பட தேவையில்லாவிடில் இந்த இற்றைப் படுத்தல் "
+"தானியங்கியாக செய்யப் படலாம்."

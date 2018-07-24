@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ -e /etc/elilo.conf ]; then
+    # Do not abort kernel removal in case of error
+    elilo </dev/null >&2 || true
+fi

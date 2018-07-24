@@ -1,0 +1,16 @@
+Source: elilo
+Section: admin
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian QA Group <packages@qa.debian.org>
+Build-Depends: debhelper (>> 5), binutils (>= 2.17.50.0.14), gcc-multilib [i386 amd64], gnu-efi (>=3.0d), po-debconf
+Standards-Version: 3.9.3
+Vcs-Git: git://git.gag.com/debian/elilo
+Vcs-Browser: http://git.gag.com/?p=debian/elilo
+
+Package: elilo
+Architecture: i386 ia64 amd64
+Depends: efibootmgr, dosfstools, debconf (>= 0.5), ${misc:Depends}, ${shlibs:Depends}
+Description: Bootloader for systems using EFI-based firmware
+ This is the Linux bootloader for systems using the Intel EFI firmware
+ specification.  This includes all ia64 systems, and some ia32 systems.

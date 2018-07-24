@@ -1,0 +1,25 @@
+Template: elilo/runme
+Type: boolean
+Default: true
+_Description: Automatically run elilo?
+ It is necessary to run /usr/sbin/elilo to install the new elilo binary into
+ the EFI partition.
+ .
+ WARNING: This procedure will write data into the debian directory of the
+ EFI disk partition, possibly overwriting files installed there by hand.
+ .
+ Not installing the new elilo binary on the EFI disk partition may leave the
+ system in an unbootable state.  Alternatives to automatic updating of the
+ partition include running /usr/sbin/elilo by hand, or installing the new
+ /usr/lib/elilo/elilo.efi executable into the EFI disk partition manually.
+
+Template: elilo/format
+Type: boolean
+Default: true
+_Description: Reformat and reload EFI partition?
+ The structure of files in the EFI disk partition has changed since pre-3.2
+ versions of the elilo package.  The EFI boot manager entry for Debian needs
+ to be updated to reflect these changes.
+ .
+ In most cases, if no manual changes to the EFI partition content need to
+ be preserved, this update can be handled automatically.

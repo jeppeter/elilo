@@ -1,0 +1,51 @@
+--- elilo/Make.defaults	2010-06-08 13:26:54.651037891 -0600
++++ /tmp/elilo-3.12/Make.defaults	2010-06-08 13:15:19.905132316 -0600
+@@ -62,13 +62,15 @@
+ CDIR    := $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
+ TOPDIR  =
+ 
+-ARCH	   = $(shell uname -m | sed s,i[3456789]86,ia32,)
++HOSTARCH   = $(shell dpkg-architecture -qDEB_BUILD_ARCH | sed s,i[3456789]86,ia32, | sed s,amd64,x86_64, )
++ARCH	   := $(shell dpkg-architecture -qDEB_BUILD_ARCH | sed s,i[3456789]86,ia32, | sed s,amd64,x86_64, )
+ INCDIR	   = -I. -I$(TOPDIR) -I$(EFIINC) -I$(EFIINC)/$(ARCH) -I$(EFIINC)/protocol -I$(TOPDIR)/efi110
+ CPPFLAGS   = -DCONFIG_$(ARCH) 
+ 
+ OPTIMFLAGS = -O2 
+ DEBUGFLAGS = -Wall
+-CFLAGS     = $(OPTIMFLAGS) -fno-stack-protector -fno-strict-aliasing -fpic -fshort-wchar $(DEBUGFLAGS)
++CFLAGS     = $(ARCH3264) $(OPTIMFLAGS) -fpic -fshort-wchar $(DEBUGFLAGS)
++ASFLAGS    = $(ARCH3264)
+ LDFLAGS	   = -nostdlib -znocombreloc
+ INSTALL	   = install
+ 
+@@ -108,10 +110,30 @@
+ 
+ # Use Modified binutils that supports x86_64 using UEFI ABI
+ ifeq ($(ARCH), x86_64)
++  ifeq ($(HOSTARCH), ia32)
++	ARCH3264 = -m64
++	LD3264 = -melf_x86_64
++
++	GNUEFILIB := $(GNUEFILIB)64
++	EFILIB    := $(EFILIB)64
++	EFICRT0   := $(EFICRT0)64
++  endif
++
+         CFLAGS   += -DEFI_FUNCTION_WRAPPER
+ 	OBJCOPY	  = /usr/bin/objcopy
+ endif
+ 
++ifeq ($(ARCH), ia32)
++  ifeq ($(HOSTARCH), x86_64)
++	ARCH3264 = -m32
++	LD3264 = -melf_i386
++
++	GNUEFILIB := /usr/lib32
++	EFILIB    := /usr/lib32
++	EFICRT0   := /usr/lib32
++  endif
++endif
++
+ ifeq ($(ARCH),ia64)
+  GCC_VERSION=$(shell $(CROSS_COMPILE)$(CC) -v 2>&1 | fgrep 'gcc version' | cut -f3 -d' ' | cut -f1 -d'.')
+ 

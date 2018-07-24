@@ -1,0 +1,585 @@
+elilo (3.14-3ubuntu1) trusty; urgency=low
+
+  * Merge from Debian. LP: #1175026 Remaining changes:
+    - Add nasty hacks for Apple systems - switch to text mode on startup,
+      pass the framebuffer size to the system on boot, and automatically set
+      legacy-free option on ia32 Apple systems.
+      (needs-to-go-upstream)
+    - Perform some Ubuntu branding, put all files in /EFI/ubuntu.
+      (ubuntu-only)
+    - Add a modprobe call if efivars facility is not found. 
+
+ -- Jackson Doak <noskcaj@ubuntu.com>  Sat, 07 Dec 2013 07:11:04 +1100
+
+elilo (3.14-3) unstable; urgency=low
+
+  * orphan this package as I no longer use it myself
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 07 May 2013 09:37:59 -0600
+
+elilo (3.14-2) unstable; urgency=low
+
+  * remove unnecessary explicit iocharset request in elilo.sh that prevents
+    ia64 installations from succeeding, closes: #685186
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 16 Oct 2012 21:52:16 -0600
+
+elilo (3.14-1) unstable; urgency=low
+
+  * new upstream version
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 29 Jun 2012 11:04:12 -0600
+
+elilo (3.12-5) unstable; urgency=low
+
+  * merge 3.12-4.1 diff from Christian Perrier
+  * add VCS entries to control file
+  * update standards version
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 29 Jun 2012 09:25:49 -0600
+
+elilo (3.12-4.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix pending l10n issues. Debconf translations:
+    - Danish (Joe Hansen).  Closes: #602446
+    - Polish (Michał Kułach).  Closes: #657502
+
+ -- Christian Perrier <bubulle@debian.org>  Wed, 01 Feb 2012 20:13:32 +0100
+
+elilo (3.12-4ubuntu1) oneiric; urgency=low
+
+  * Resynchronise with Debian.  Remaining changes:
+    - Add nasty hacks for Apple systems - switch to text mode on startup,
+      pass the framebuffer size to the system on boot, and automatically set
+      legacy-free option on ia32 Apple systems.
+      (needs-to-go-upstream)
+    - Perform some Ubuntu branding, put all files in /EFI/ubuntu.
+      (ubuntu-only)
+    - Add a modprobe call if efivars facility is not found.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon, 22 Aug 2011 21:17:34 +0100
+
+elilo (3.12-4) unstable; urgency=low
+
+  * don't break kernel install if not configured yet, closes: #594650
+
+ -- Bdale Garbee <bdale@gag.com>  Wed, 08 Sep 2010 14:57:33 -0600
+
+elilo (3.12-3.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add kernel and initramfs hook scripts to ensure elilo is reinstalled
+    whenever the kernel or initramfs is updated. closes: #590023
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Fri, 30 Jul 2010 18:32:03 +0100
+
+elilo (3.12-3) unstable; urgency=low
+
+  * fix paths and options to build both 32 and 64 bit versions on either
+    flavor of build host, closes: #574713
+  * don't generate noise when following symlink since that's now the normal
+    situation, closes: #581068
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 08 Jun 2010 13:42:05 -0600
+
+elilo (3.12-2) unstable; urgency=low
+
+  * fix paths to support cross-building in ia32/Makefile, closes: #555153
+
+ -- Bdale Garbee <bdale@gag.com>  Mon, 15 Mar 2010 16:24:32 -0600
+
+elilo (3.12-1) unstable; urgency=low
+
+  * new upstream version, closes: #376002
+  * patch for dpkg option --print-installation-architecture going obsolete 
+    from Dann Frazier, closes: #550090
+  * support building 32 and 64 bit targets on each host, closes: #483045
+
+ -- Bdale Garbee <bdale@gag.com>  Sun, 01 Nov 2009 22:37:21 -0700
+
+elilo (3.10-1ubuntu1) lucid; urgency=low
+
+  * Resynchronise with Debian. Remaining changes:
+    - Automatically set legacy-free option on ia32 Apple systems.
+      (needs-to-go-upstream)
+    - Add nasty hacks for Apple systems - switch to text mode on startup,
+      and pass the framebuffer size to the system on boot.
+      (needs-to-go-upstream)
+    - Perform some Ubuntu branding, put all files in /EFI/ubuntu.
+      (ubuntu-only)
+    - Add a modprobe call if efivars facility is not found.
+  * Drop lpia support, as lpia is being decommissioned.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Tue, 08 Dec 2009 23:52:21 +0000
+
+elilo (3.10-1) unstable; urgency=low
+
+  * new upstream version
+  * incorporate Spanish debconf template translation, closes: #512993
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 03 Apr 2009 17:49:01 -0600
+
+elilo (3.8-1ubuntu2) karmic; urgency=low
+
+  * Pass -nostdlib to the compiler as well, so that it knows not to use
+    stack protection.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Wed, 07 Oct 2009 00:22:11 +0100
+
+elilo (3.8-1ubuntu1) intrepid; urgency=low
+
+  * Merge from debian unstable, remaining changes:
+    - Build package for architecture lpia.
+    - Automatically set legacy-free option on ia32 Apple systems. (needs-to-go-upstream)
+    - Add nasty hacks for Apple systems - switch to text mode on startup, and
+      pass the framebuffer size to the system on boot. (needs-to-go-upstream)
+    - Perform some Ubuntu branding, put all files in /EFI/ubuntu. (ubuntu-only)
+    - Add a modprobe call if efivars facility is not found.
+
+ -- Bryce Harrington <bryce@ubuntu.com>  Thu, 19 Jun 2008 19:06:08 -0700
+
+elilo (3.8-1) unstable; urgency=low
+
+  * new upstream version
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 08 Jan 2008 17:37:40 -0700
+
+elilo (3.7-3ubuntu1) hardy; urgency=low
+
+  * Merge from debian unstable, remaining changes:
+    - Build package for architecture lpia.
+    - Automatically set legacy-free option on ia32 Apple systems.
+    - Add nasty hacks for Apple systems - switch to text mode on startup, and
+      pass the framebuffer size to the system on boot.
+    - Perform some Ubuntu branding, put all files in /EFI/ubuntu.
+    - Add a modprobe call if efivars facility is not found.
+
+ -- Fabio M. Di Nitto <fabbione@ubuntu.com>  Mon, 24 Dec 2007 05:56:06 +0100
+
+elilo (3.7-3) unstable; urgency=low
+
+  * update build-dep to specify gnu-efi 3.0d or later, closes: #452010
+  * updated Dutch translation, closes: #447725
+
+ -- Bdale Garbee <bdale@gag.com>  Mon, 10 Dec 2007 15:59:57 -0700
+
+elilo (3.7-2ubuntu1) hardy; urgency=low
+
+  * Merge with Debian, remaining changes:
+    - Build package for architecture lpia.
+    - elilo.sh: Set interpreter to /bin/bash, uses bashisms.
+    - Automatically set legacy-free option on ia32 Apple systems.
+    - Add nasty hacks for Apple systems - switch to text mode on startup, and
+      pass the framebuffer size to the system on boot. 
+    - Build with -march=i386 on ia32 systems - appears to be needed for Apple
+      hardware.
+    - Perform some Ubuntu branding, put all files in /EFI/ubuntu.
+    - Add a modprobe call if efivars facility is not found.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 05 Dec 2007 13:35:51 +0100
+
+elilo (3.7-2) unstable; urgency=low
+
+  * fix ugly merge problem I caused while preparing 3.7-1 
+  * apply patches from Aron Griffis accepted by upstream but not in a released
+    tarball yet
+
+ -- Bdale Garbee <bdale@gag.com>  Wed, 05 Sep 2007 16:38:41 +0100
+
+elilo (3.7-1) unstable; urgency=low
+
+  * new upstream version
+  * patch from upstream CVS via Alex Williamson to clear vmm= options, 
+    closes: #433498
+  * patch from Eric Schwartz to fix eliloalt, closes: #427512
+  * fix typo in elilo.templates, closes: #414663
+  * documentation / translation fixes coalesced by Christian Perrier
+    - Remove extra spaces in debconf templates. Closes: #413899
+    - Galician. Closes: #414116
+    - Swedish
+    - Tamil
+    - German. Closes: #413897
+    - French
+    - Czech.
+    - Portuguese. Closes: #414211
+    - Brazilian Portuguese.
+    - Japanese. Closes: #414662
+    - Italian.
+    - Romanian. Closes: #414947, #415369
+  * merge Dutch translation, closes: #418396
+
+ -- Bdale Garbee <bdale@gag.com>  Wed, 05 Sep 2007 15:12:13 +0100
+
+elilo (3.6-3.1ubuntu2) gutsy; urgency=low
+
+  * Build package for architecture lpia.
+  * Set Ubuntu maintainer address.
+
+ -- Matthias Klose <doko@ubuntu.com>  Fri, 10 Aug 2007 08:13:59 +0000
+
+elilo (3.6-3.1ubuntu1) gutsy; urgency=low
+
+  * Merge with Debian; remaining changes:
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 23 May 2007 13:40:13 +0200
+
+elilo (3.6-3.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * High-urgency upload for RC bugfix.
+  * The check for new installs is broken, because apt-install elilo is
+    apparently not guaranteed to complete before the fstab is configured;
+    instead, check for the existence of /etc/elilo.conf to determine 
+    whether to run elilo on install.  Closes: #414419.
+  * Also fix a missing $ in the debconf config script that caused a syntax
+    error.
+
+ -- Steve Langasek <vorlon@debian.org>  Mon, 12 Mar 2007 03:44:09 -0700
+
+elilo (3.6-3) unstable; urgency=high
+
+  * patch from Dann Frazier that adds an option to run /usr/sbin/elilo in 
+    the postinst using debconf, closes: #410362
+  * cranking the urgency since 410362 helps with a problem upgrading to etch
+    for systems that depend on elilo
+  * elilo.sh uses bash syntax, so use bash explicitly, closes: #385492
+
+ -- Bdale Garbee <bdale@gag.com>  Mon,  5 Mar 2007 16:26:32 -0700
+
+elilo (3.6-2ubuntu2) edgy; urgency=low
+
+  * elilo.sh: Set interpreter to /bin/bash, uses bashisms.
+
+ -- Matthias Klose <doko@ubuntu.com>  Fri, 22 Sep 2006 16:11:53 +0000
+
+elilo (3.6-2ubuntu1) edgy; urgency=low
+
+  * Resynchronise with Debian.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Mon,  3 Jul 2006 14:57:32 +0100
+
+elilo (3.6-2) unstable; urgency=low
+
+  * freshen gnu-efi build dependency version, closes: #355252
+  * patch from Alex Williamson that adds support to our elilo user space 
+    script for the vmm= option needed by Xen, closes: #350185
+   
+ -- Bdale Garbee <bdale@gag.com>  Sat,  1 Apr 2006 22:28:59 -0800
+
+elilo (3.6-1ubuntu5) dapper; urgency=low
+
+  * Automatically set legacy-free option on ia32 Apple systems.
+
+ -- Colin Watson <cjwatson@ubuntu.com>  Wed, 22 Mar 2006 15:36:23 +0000
+
+elilo (3.6-1ubuntu4) dapper; urgency=low
+
+  * Bump gnu-efi build-depends in order to really fix the build issues
+  * Fix the length of the string used for fudging Apple framebuffers
+  * First upload to be built on an Apple running Ubuntu 
+
+ -- Matthew Garrett <mjg59@srcf.ucam.org>  Mon, 20 Mar 2006 00:19:34 +0000
+
+elilo (3.6-1ubuntu3) dapper; urgency=low
+
+  * Add nasty hacks for Apple systems - switch to text mode on startup, and
+    pass the framebuffer size to the system on boot. 
+
+ -- Matthew Garrett <mjg59@srcf.ucam.org>  Sat, 18 Mar 2006 16:02:03 +0000
+
+elilo (3.6-1ubuntu2) dapper; urgency=low
+
+  * Build with -march=i386 on ia32 systems - appears to be needed for Apple
+    hardware
+  * Build-depend on gnu-efi-3.0b-1ubuntu2 in order to avoid problems with
+    newer toolchains
+
+ -- Matthew Garrett <mjg59@srcf.ucam.org>  Fri, 17 Mar 2006 20:50:30 +0000
+
+elilo (3.6-1ubuntu1) dapper; urgency=low
+
+  * Resync with Debian.
+
+ -- LaMont Jones <lamont@ubuntu.com>  Wed, 18 Jan 2006 08:40:42 -0700
+
+elilo (3.6-1) unstable; urgency=low
+
+  * new upstream version
+
+ -- Bdale Garbee <bdale@gag.com>  Mon,  9 Jan 2006 17:45:02 -0700
+
+elilo (3.4pre5.2-2) unstable; urgency=low
+
+  * change section from base to admin to match override
+  * accept patch to fix syntax issue in elilo script, closes: #342639
+
+ -- Bdale Garbee <bdale@gag.com>  Fri,  9 Dec 2005 10:14:30 -0800
+
+elilo (3.4pre5.2-1) unstable; urgency=low
+
+  * new upstream version 3.5-pre2, closes: #338185
+  * implement suggestion from Thibaut Varene to have elilo.so try to modprobe 
+    the efivars module before checking the environment for calling efibootmgr.
+  * update elilo.sh to always use relocatable on ia64 elilo.conf generation,
+    closes: #324067
+  * update debian/copyright to reflect upstream source move, closes: #341136
+
+ -- Bdale Garbee <bdale@gag.com>  Thu,  8 Dec 2005 10:13:58 -0800
+
+elilo (3.4-9ubuntu1) hoary; urgency=low
+
+  * Perform some Ubuntu branding, put all files in /EFI/ubuntu
+  * Add a modprobe call if efivars facility is not found
+
+ -- Thibaut VARENE <varenet@debian.org>  Sun, 16 Jan 2005 13:01:23 +0000
+
+elilo (3.4-9) unstable; urgency=low
+
+  * patch from upstream to fix problems when wrong -C param is provided,
+    closes: #238434
+  * if the --autoconf option is used on an SGI Altix system, add 'relocatable' 
+    to the resulting elilo.conf as per request from Jesse Barnes
+  * make elilo.sh replace tabs with spaces when copying elilo.conf to the 
+    system partition, as tabs kill old elilo.efi versions, closes: #279646
+  * patch from upstream to enlarge max textmenu size, closes: #273745
+
+ -- Bdale Garbee <bdale@gag.com>  Mon, 29 Nov 2004 02:38:12 -0700
+
+elilo (3.4-7.sarge.1) testing; urgency=high
+
+  * build 3.4-8 in testing chroot for sarge
+  * update elilo.sh to know that efibootmgr can use /sys/firmware/efi/vars
+    as an alternative to /proc/efi/vars when used with 2.6 kernels
+  * urgency high since previous version fails to call efibootmgr with 
+    current 2.6 kernels
+
+ -- Bdale Garbee <bdale@gag.com>  Wed, 18 Aug 2004 09:09:32 -0600
+
+elilo (3.4-8) unstable; urgency=high
+
+  * update elilo.sh to know that efibootmgr can use /sys/firmware/efi/vars
+    as an alternative to /proc/efi/vars when used with 2.6 kernels
+  * urgency high since previous version fails to call efibootmgr with 
+    current 2.6 kernels
+
+ -- Bdale Garbee <bdale@gag.com>  Wed, 18 Aug 2004 09:04:39 -0600
+
+elilo (3.4-7) unstable; urgency=medium
+
+  * a patch in kernel 2.6.8-rc3 reverted in rc4 broke an NLS default we 
+    depended on.  This fix add options to the mount call in elilo.sh so we 
+    no longer care about the default, closes: #263484
+  * changes from David Weinehall to fix elilo.sh XSI:isms, closes: #256507
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 13 Aug 2004 17:16:07 -0600
+
+elilo (3.4-6) unstable; urgency=high
+
+  * patch from Jeff Bailey to ease use of devfs and non-devfs enabled kernels,
+    closes: #232259
+
+ -- Bdale Garbee <bdale@gag.com>  Sat, 14 Feb 2004 22:21:36 -0700
+
+elilo (3.4-5) unstable; urgency=high
+
+  * patch from Richard Hirst to allow elilo.sh to work with initrd kernels,
+    closes: #229016
+      - 'modprobe vfat' in case support isn't currently loaded
+      - include initrd= lines when generating a new .conf file, if
+        /etc/kernel-img.cong says do_initrd=yes
+      - when generating a new append= line, preserve only console=
+        from any existing kernel cmdline
+      - Add '-P' to 'df -k' calls, closes: #204423
+  * patch from Richard Hirst to avoid using the wrong initrd when elilo is
+    driven interactively, closes: #217595
+  * urgency set high because the d-i folk want this update in testing quickly
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 22 Jan 2004 09:34:16 -0700
+
+elilo (3.4-4) unstable; urgency=low
+
+  * add i386 to list of supported architectures, build depend on a suitably
+    new version of gnu-efi to allow that to work, and change priority from 
+    standard to optional so elilo isn't installed by default on i386
+  * stop forcing use of gcc-3.2
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 23 Oct 2003 22:19:51 -0600
+
+elilo (3.4-3) unstable; urgency=low
+
+  * minor patch from upstream to turn off a debugging output accidentally
+    left in the 3.4 release.
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 29 Aug 2003 21:35:46 -0600
+
+elilo (3.4-2) unstable; urgency=low
+
+  * force use of gcc-3.2, since latest gcc yields an elilo.efi that won't 
+    boot on at least some systems, closes: #207547
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 29 Aug 2003 11:34:00 -0600
+
+elilo (3.4-1) unstable; urgency=low
+
+  * new upstream version
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 21 Aug 2003 15:38:26 -0600
+
+elilo (3.3a-3) unstable; urgency=low
+
+  * update the elilo shell script to handle SmartArray device naming
+
+ -- Bdale Garbee <bdale@gag.com>  Wed,  7 May 2003 21:30:53 -0600
+
+elilo (3.3a-2) unstable; urgency=low
+
+  * apply patch from Richard Hirst to have the elilo shell script pay 
+    attention to /etc/kernel-img.conf if it exists.
+
+ -- Bdale Garbee <bdale@gag.com>  Wed,  5 Mar 2003 15:29:12 -0700
+
+elilo (3.3a-1) unstable; urgency=low
+
+  * new upstream version, closes: #165957, #136862
+  * patch to elilo shell script from Dann Frazier to warn user that --force 
+    is now deprecated, closes: #141994
+  * patch to elilo shell script and rules from Dann Frazier to allow -V 
+    option to return the complete version, closes: #142027
+  * patch to elilo shell script from Richard Hirst that fixes problem with
+    whitespace matching in elilo.conf, closes: #146125
+  * add sys2ansi.pl script to the textmenu_chooser example directory since it
+    helps with developing new menu and help screens, closes: #144266
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 29 Oct 2002 20:03:27 -0700
+
+elilo (3.2-2) unstable; urgency=high
+
+  * craft a reasonably complete elilo.8 man page from Richard's README.Debian
+    content
+  * craft a minimal eliloalt.8 man page that points to /usr/share/doc/elilo
+  * upload with high priority since ia64 b-f needs 3.2 or later in woody
+  * make elilo.efi not be marked executable since it isn't under Linux!
+
+ -- Bdale Garbee <bdale@gag.com>  Mon, 18 Mar 2002 16:22:26 -0700
+
+elilo (3.2-1) unstable; urgency=low
+
+  * new upstream version, merge updates made by Richard Hirst
+  * new /usr/sbin/elilo script, general cleanup, handles GPT tables,
+    puts everything under /EFI/debian subdir, adds boot manager entry
+    after floppy and CD/DVD entries, if they exist
+  * added new tool /usr/sbin/eliloalt, see /usr/share/docs/elilo
+  * updated installed docs to match new upstream source
+  * add postinst query on upgrade from pre-3.2 version offering to rewrite
+    EFI partition and update boot manager entry to reflect structure changes.
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 14 Mar 2002 10:53:42 -0700
+
+elilo (3.1-5) unstable; urgency=low
+
+  * ensure /proc is mounted for efiboot and autoconf options
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 15 Nov 2001 14:56:11 -0700
+
+elilo (3.1-4) unstable; urgency=low
+
+  * integrate changes made by Richard Hirst:
+  * elilo can now handle '/' as a path seperator, so no need to modify
+    paths in elilo.conf
+  * record partition contents in .elilofiles, and only prompt before
+    reformatting on next run if contents have changed
+
+ -- Bdale Garbee <bdale@gag.com>  Thu,  8 Nov 2001 10:20:03 -0700
+
+elilo (3.1-3) unstable; urgency=medium
+
+  * changes to elilo user space script from Richard Hirst to improve install
+    process on systems with serial consoles
+
+ -- Bdale Garbee <bdale@gag.com>  Mon, 29 Oct 2001 12:46:30 -0700
+
+elilo (3.1-2) unstable; urgency=low
+
+  * add dependency on dosfstools since /sbin/elilo uses it to (re)generate
+    the EFI partition
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 30 Aug 2001 10:27:47 -0600
+
+elilo (3.1-1) unstable; urgency=low
+
+  * new upstream version
+  * back out all Debian-specific changes I think are no longer relevant
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 21 Aug 2001 11:43:21 -0600
+
+elilo (3.0-8) unstable; urgency=low
+
+  * add dependency on efibootmgr, since the user-space elilo script now
+    knows how to use it to configure EFI's boot manager
+
+ -- Bdale Garbee <bdale@gag.com>  Fri, 10 Aug 2001 13:38:55 -0600
+
+elilo (3.0-7) unstable; urgency=low
+
+  * make the elilo script tolerant of the 'bootable' flag being set on the
+    EFI partition
+
+ -- Bdale Garbee <bdale@gag.com>  Thu,  9 Aug 2001 17:05:47 -0600
+
+elilo (3.0-6) unstable; urgency=low
+
+  * fold in patch from Richard Hirst implementing changes as follows:
+  *   added README.elilo for /usr/sbin/elilo script
+  *   verify boot partition is type EFI
+  *   don't copy files that appear to be specified via EFI device path
+      (i.e. if image= or initrd= contains a ':')
+  *   run efibootmgr if requested (b-f does request it)
+  *   check boot partition is big enough before reformatting
+  *   include vmlinuz.old entry in elilo.conf, incase kernel-image
+      expects it
+
+ -- Bdale Garbee <bdale@gag.com>  Wed,  8 Aug 2001 13:51:10 -0600
+
+elilo (3.0-5) unstable; urgency=low
+
+  * move elilo script from /sbin to /usr/sbin at Richard's request
+
+ -- Bdale Garbee <bdale@gag.com>  Fri,  3 Aug 2001 09:48:25 -0600
+
+elilo (3.0-4) unstable; urgency=low
+
+  * fix from Stephane for problem where argument string is modified by
+    the loader.
+  * fix from Stephane for problem discovered by Richard typing return 
+    with no text at the elilo boot prompt
+  * change priority from important to standard
+
+ -- Bdale Garbee <bdale@gag.com>  Mon, 30 Jul 2001 10:21:52 -0600
+
+elilo (3.0-3) unstable; urgency=low
+
+  * make /sbin/elilo executable
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 19 Jul 2001 22:33:47 -0600
+
+elilo (3.0-2) unstable; urgency=low
+
+  * fix for interactive use from linux-ia64 mailing list
+  * changes for recognising full device paths in elilo.conf from Richard
+    Hirst that may or may not be retained in the future.
+  * includes user-space elilo script used to create and populate EFI 
+    partitions during installations and updates
+
+ -- Bdale Garbee <bdale@gag.com>  Thu, 19 Jul 2001 15:43:59 -0600
+
+elilo (3.0-1) unstable; urgency=low
+
+  * Initial release of elilo package since upstream split source away from
+    the gnu-efi package.
+
+ -- Bdale Garbee <bdale@gag.com>  Tue, 10 Jul 2001 13:20:28 -0600
+
+Local variables:
+mode: debian-changelog
+End:

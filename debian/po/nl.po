@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: elilo\n"
+"Report-Msgid-Bugs-To: bdale@gag.com\n"
+"POT-Creation-Date: 2007-03-13 08:22+0100\n"
+"PO-Revision-Date: 2007-10-23 13:58+0100\n"
+"Last-Translator: Bart Cornelis <cobaco@skolelinux.no>\n"
+"Language-Team: debian-l10n-dutch <debian-l10n-dutch@lists.debian.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Dutch\n"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid "Automatically run elilo?"
+msgstr "Wilt u elilo automatisch uitvoeren?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"It is necessary to run /usr/sbin/elilo to install the new elilo binary into "
+"the EFI partition."
+msgstr ""
+"Het is nodig om /usr/bin/elilo uit te voeren; dit installeert het nieuwe "
+"elilo binair bestand op de EFI-partitie."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"WARNING: This procedure will write data into the debian directory of the EFI "
+"disk partition, possibly overwriting files installed there by hand."
+msgstr ""
+"WAARSCHUWING: Deze procedure schrijft data naar de debian-map van de EFI-"
+"partitie, dit kan handmatige geïnstalleerde bestanden overschrijven."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:1001
+msgid ""
+"Not installing the new elilo binary on the EFI disk partition may leave the "
+"system in an unbootable state.  Alternatives to automatic updating of the "
+"partition include running /usr/sbin/elilo by hand, or installing the new /"
+"usr/lib/elilo/elilo.efi executable into the EFI disk partition manually."
+msgstr ""
+"Als u nalaat om het nieuwe binair bestand van elilo te installeren op de EFI-"
+"schijfpartitie kan dit uw systeem in een niet-opstartbare staat laten. "
+"Alternatieven voor het automatisch bijwerken van de partitie zijn het "
+"handmatig uitvoeren van /usr/bin/elilo, en het handmatig installeren van het "
+"nieuwe uitvoerbaar bestand /usr/lib/elilo/elilo.efi naar de EFI-partitie."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid "Reformat and reload EFI partition?"
+msgstr "Wilt u de EFI-partitie herformatteren en herladen?"
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"The structure of files in the EFI disk partition has changed since pre-3.2 "
+"versions of the elilo package.  The EFI boot manager entry for Debian needs "
+"to be updated to reflect these changes."
+msgstr ""
+"De pre-3.2 versies van het pakket 'elilo' hadden een andere "
+"bestandsstructuur op de EFI-partitie. De ingang voor Debian in de EFI-"
+"opstartbeheerder dient aangepast te worden om deze veranderingen te "
+"reflecteren."
+
+#. Type: boolean
+#. Description
+#: ../elilo.templates:2001
+msgid ""
+"In most cases, if no manual changes to the EFI partition content need to be "
+"preserved, this update can be handled automatically."
+msgstr ""
+"In de meeste gevallen (als er geen handmatige veranderingen gemaakt zijn aan "
+"de inhoud van de EFI-partitie) kan deze opwaardering automatisch afgehandeld "
+"worden."

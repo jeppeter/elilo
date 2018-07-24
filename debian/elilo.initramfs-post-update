@@ -1,0 +1,15 @@
+#!/bin/sh
+case "$DPKG_MAINTSCRIPT_PACKAGE" in
+    linux-image-*)
+	# elilo will be updated later by the kernel postinst hook; no
+	# need to update it now.
+	exit 0
+	;;
+    *)
+	if [ -e /etc/elilo.conf ]; then
+	    elilo </dev/null >&2
+	else
+	    echo >&2 "elilo: Not updating; /etc/elilo.conf not found"
+	fi
+	;;
+esac

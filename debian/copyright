@@ -1,0 +1,20 @@
+This package was debianized by Bdale Garbee <bdale@gag.com> using sources
+obtained from
+
+	http://elilo.sourceforge.net/
+
+Copyright:
+
+  Copyright (C) 1999-2003 Hewlett-Packard Co.
+      Contributed by David Mosberger <davidm@hpl.hp.com>.
+      Contributed by Stephane Eranian <eranian@hpl.hp.com>
+
+  Copyright (C) 1999-2000 VA Linux Systems
+      Contributed by Johannes Erdfelt <jerdfelt@valinux.com>.
+
+  Copyright (C) 2001 Silicon Graphics, Inc.
+      Contributed by Brent Casavant <bcasavan@sgi.com>
+
+elilo is distributed under the GNU Public License.  On a Debian system,
+the license can be found in /usr/share/common-licenses/GPL.  Or you may 
+contact the Free Software Foundation to obtain a copy.

@@ -1,0 +1,43 @@
+#!/bin/sh
+
+set -e
+
+if [ -f /usr/share/debconf/confmodule ]; then
+  . /usr/share/debconf/confmodule
+fi
+
+
+case "$1" in
+    configure|reconfigure)
+	# On new installs, do nothing - elilo-installer will handle it for d-i
+	if [ -e /etc/elilo.conf ]; then
+            if [ "$2" ] && dpkg --compare-versions "$2" lt 3.2-1
+            then
+                db_get elilo/format || true;
+                if [ x"$RET" = x"true" ]; then
+                    echo "Running elilo..."
+                    elilo --format --efiboot
+                fi
+            else
+                db_get elilo/runme || true;
+                if [ x"$RET" = x"true" ]; then
+                    echo "Running elilo..."
+                    elilo
+                fi
+            fi
+        fi
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        exit 0
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0
