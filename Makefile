@@ -72,7 +72,7 @@ FILES = elilo.o getopt.o strops.o loader.o \
         fileops.o util.o vars.o alloc.o chooser.o  \
 	config.o initrd.o alternate.o bootparams.o \
 	gunzip.o console.o apple.o fs/fs.o \
-	choosers/choosers.o \
+	choosers/choosers.o elilo_debug.o \
 	devschemes/devschemes.o \
 	$(ARCH)/sysdeps.o \
 	$(FILESYSTEMS)

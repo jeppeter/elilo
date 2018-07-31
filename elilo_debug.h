@@ -30,19 +30,55 @@
 //#define DEBUG_GZIP
 //#define DEBUG_BZ
 
+#include <efi.h>
+#include <efiser.h>
+#include <efierr.h>
+
+#define  EFI_NO_MEM         EFIERR(3001)
+
+extern CHAR16* gl_debug_buffer;
+extern INTN   gl_buffer_size;
+extern SERIAL_IO_INTERFACE** gl_serial_interface;
+extern INTN   gl_interface_num;
+extern void   serial_out_device(SERIAL_IO_INTERFACE* interface,CHAR16* pstr);
+
 #define ELILO_DEBUG 1
 
-#define ERR_PRT(a)	do { Print(L"%a(line %d):", __FILE__, __LINE__); Print a; Print(L"\n"); } while (0);
+#define _wrapper_print(...)                                                                 \
+	do {                                                                                    \
+		INTN _ii = 0;                                                                       \
+		if (gl_debug_buffer != NULL) {                                                      \
+			SPrint(gl_debug_buffer,gl_buffer_size, __VA_ARGS__);                            \
+			Print(L"%s", gl_debug_buffer);                                                  \
+		}                                                                                   \
+		if (gl_serial_interface != NULL && gl_debug_buffer != NULL) {                       \
+			for (_ii=0;_ii < gl_interface_num;_ii++) {                                      \
+				if (gl_serial_interface[_ii] != NULL) {                                     \
+					serial_out_device(gl_serial_interface[_ii], gl_debug_buffer);           \
+				}                                                                           \
+			}                                                                               \
+		}                                                                                   \
+	}while(0)
+
+#define ERR_PRT(a)	do { _wrapper_print(L"%a(line %d):", __FILE__, __LINE__); _wrapper_print a; _wrapper_print(L"\n"); } while (0);
 
 #ifdef ELILO_DEBUG
 #define DBG_PRT(a)	do { \
-	if (elilo_opt.debug) { \
-		Print(L"%a(line %d):", __FILE__, __LINE__); \
-		Print a; \
-		Print(L"\n"); \
-} } while (0);
+		_wrapper_print(L"%a(line %d):", __FILE__, __LINE__); \
+		_wrapper_print a;                                    \
+		_wrapper_print(L"\n");                               \
+} while (0);
 #else
-#define DBG_PRT(a)
+#define DBG_PRT(a)	do { \
+	if (elilo_opt.debug) { \
+		_wrapper_print(L"%a(line %d):", __FILE__, __LINE__); \
+		_wrapper_print a; \
+		_wrapper_print(L"\n"); \
+	} \
+} while (0);
 #endif
+
+EFI_STATUS init_debug_buffer(EFI_HANDLE image);
+void fini_debug_buffer(void);
 
 #endif /* __ELILO_DEBUG_H__ */

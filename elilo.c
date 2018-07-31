@@ -491,6 +491,8 @@ efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *system_tab)
 	/* initialize memory allocator */
 	if (alloc_init() == -1) return EFI_LOAD_ERROR;
 
+    init_debug_buffer(image);
+
 	status = uefi_call_wrapper(BS->HandleProtocol, 3, image, &LoadedImageProtocol, (VOID **) &info);
 	if (EFI_ERROR(status)) {
 		ERR_PRT((L"image handle does not support LOADED_IMAGE protocol"));
