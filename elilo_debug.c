@@ -1,4 +1,4 @@
-#include "elilo_debug.h"
+#include "elilo.h"
 #include <efilib.h>
 
 CHAR16* gl_debug_buffer = NULL;
@@ -186,16 +186,36 @@ void fini_debug_buffer(void)
     return;
 }
 
+unsigned char __io_read8(UINTN port)
+{
+	unsigned char retch;
+	asm volatile("inb %w1, %b0":"=a"(retch):"Nd" (port));
+	return retch;
+}
+
+void __io_write8(UINTN port, unsigned char c)
+{
+	asm volatile("outb %b0,%w1"::"a" (c), "Nd"(port));
+	return;
+}
+
+void __uart_write_char(UINTN baseport,unsigned char ch)
+{
+	while( (__io_read8(baseport + 5) & 0x20) == 0);
+	__io_write8(baseport,ch);
+}
+
 void   serial_out_device(SERIAL_IO_INTERFACE* interface,CHAR16* pstr)
 {
-	char curch;
+	unsigned char curch;
 	INTN i;
-	INTN bufsize=1;
+	//INTN bufsize=1;
 
 	for (i=0;pstr[i]!= 0x00;i++) {
-		bufsize = 1;
-		curch = (char) pstr[i] & 0xff;
-		uefi_call_wrapper(interface->Write,3, interface, &bufsize,&curch);
+		//bufsize = 1;
+		curch = (unsigned char) (pstr[i] & 0xff);
+		__uart_write_char(0x3f8, curch);
+		//uefi_call_wrapper(interface->Write,3, interface, &bufsize,&curch);
 	}
 	return ;
 

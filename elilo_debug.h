@@ -47,9 +47,10 @@ extern void   serial_out_device(SERIAL_IO_INTERFACE* interface,CHAR16* pstr);
 #define _wrapper_print(...)                                                                 \
 	do {                                                                                    \
 		INTN _ii = 0;                                                                       \
+		/*Print(__VA_ARGS__);*/                                                             \
 		if (gl_debug_buffer != NULL) {                                                      \
 			SPrint(gl_debug_buffer,gl_buffer_size, __VA_ARGS__);                            \
-			Print(L"%s", gl_debug_buffer);                                                  \
+			/*Print(L"%s", gl_debug_buffer);*/                                              \
 		}                                                                                   \
 		if (gl_serial_interface != NULL && gl_debug_buffer != NULL) {                       \
 			for (_ii=0;_ii < gl_interface_num;_ii++) {                                      \
