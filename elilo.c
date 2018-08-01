@@ -276,6 +276,7 @@ do_launch:
 
 retry:
 	status = uefi_call_wrapper(BS->ExitBootServices, 2, image, cookie);
+	DBG_PRT((L"cookie 0x%lx [%ld] status [0x%lx]\n", cookie, cookie, status));
 	if (EFI_ERROR(status)) 
 	{
 		ERR_PRT((L"\nExitBootSvcs: failed, memory map has changed.\n"));
