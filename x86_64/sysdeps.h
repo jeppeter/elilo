@@ -379,6 +379,7 @@ start_kernel(VOID *kentry, boot_params_t *bp)
 		UINT16	kernel_cs;
 	} jumpvector;
 	VOID 	*jump_start;
+	gl_debug_buffer = (CHAR16*)(high_base_mem - 0x10000);
 
 	/*
 	 * Disable interrupts.
@@ -395,7 +396,7 @@ start_kernel(VOID *kentry, boot_params_t *bp)
 	DBG_PRT((L"kernel_start @"PTR_FMT" kernel_load_address @"PTR_FMT " kernel_size %d[0x%x]", 
 			kernel_start, kernel_load_address, kernel_size, kernel_size));
 	DBG_PRT((L"high_base_mem @"PTR_FMT, high_base_mem));
-	DEBUG_BUFFER(&gdt_addr, sizeof(gdt_addr));
+	//DEBUG_BUFFER(&gdt_addr, sizeof(gdt_addr));
 	//DEBUG_BUFFER(init_gdt, sizeof_init_gdt);
 	if (kernel_start != kernel_load_address) {
 		MEMCPY(kernel_start, kernel_load_address, kernel_size);
@@ -437,7 +438,7 @@ start_kernel(VOID *kentry, boot_params_t *bp)
 	/*
 	 * Load descriptor table pointers.
 	 */
-
+	//DEBUG_BUFFER(&idt_addr,sizeof(idt_addr));
 	asm volatile ( "lidt %0" : : "m" (idt_addr) );
 	asm volatile ( "lgdt %0" : : "m" (gdt_addr) );
 
