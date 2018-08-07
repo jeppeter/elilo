@@ -649,6 +649,7 @@ sysdeps_create_boot_params(
 	 * Save off our header revision information.
 	 */
 	hdr_version = (bp->s.hdr_major << 8) | bp->s.hdr_minor;
+	hdr_version = hdr_version;
 
 	/*
 	 * Do NOT clear out unknown memory in boot sector image.

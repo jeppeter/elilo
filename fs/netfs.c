@@ -626,6 +626,7 @@ netfs_getinfo(netfs_interface_t *this, netfs_info_t *info)
 	if (nfs->pxe->Mode->UsingIpv6) goto skip_options;
 
 	r = find_dhcp_option(&nfs->pxe->Mode->DhcpAck,nfs->pxe->Mode->UsingIpv6, 15, str,  &len);
+	r = r;
 	str[len] = '\0';
 	ascii2U(str, info->domainame, 255);
 

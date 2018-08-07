@@ -312,6 +312,7 @@ reprint:
 				Print(L"\n");
 				print_devices();
 				first_time = 0;
+				first_time = first_time;
 				goto reprint;
 			case CHAR_BACKSPACE:
 			case CHAR_DEL:

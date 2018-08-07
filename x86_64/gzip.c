@@ -160,6 +160,7 @@ fill_inbuf(void)
 	EFI_STATUS status;
 
 	expected = nread = INBUFSIZE;
+	expected = expected;
 
 	status = fops_read(input_fd, inbuf, &nread);
 	if (EFI_ERROR(status)) {

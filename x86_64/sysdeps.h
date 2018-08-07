@@ -392,6 +392,11 @@ start_kernel(VOID *kentry, boot_params_t *bp)
 	 * since we couldn't alloc that space for the kernel (or the kernel
 	 * would already be there).
 	 */
+	DBG_PRT((L"kernel_start 0x%llx kernel_load_address 0x%llx kernel_size %d[0x%x]", 
+			kernel_start, kernel_load_address, kernel_size, kernel_size));
+	DBG_PRT((L"high_base_mem 0x%llx", high_base_mem));
+	//DEBUG_BUFFER(&gdt_addr, sizeof(gdt_addr));
+	//DEBUG_BUFFER(init_gdt, sizeof_init_gdt);
 	if (kernel_start != kernel_load_address) {
 		MEMCPY(kernel_start, kernel_load_address, kernel_size);
 	}

@@ -33,6 +33,7 @@
 #include <efi.h>
 #include <efiser.h>
 #include <efierr.h>
+#include <efilib.h>
 
 #define  EFI_NO_MEM         EFIERR(3001)
 
@@ -60,6 +61,63 @@ extern void   serial_out_device(SERIAL_IO_INTERFACE* interface,CHAR16* pstr);
 			}                                                                               \
 		}                                                                                   \
 	}while(0)
+
+extern int isprint(int ch);
+
+#define __LOG_BUFFER_FMT(level,ptr,size)                                           \
+	do {                                                                           \
+		INTN __i,__size=(INTN) (size);                                             \
+		unsigned char* __pcur,*__plast;                                            \
+		_wrapper_print(L"%a:%d ptr[0x%llx] size[%ld:0x%lx]", __FILE__,__LINE__,    \
+			(ptr),__size,__size);                                                  \
+		__pcur = (unsigned char*)(ptr);                                            \
+		__plast = __pcur;                                                          \
+		__i = 0;                                                                   \
+		for (__i=0;__i < __size;__i++) {                                           \
+			if ((__i % 16) == 0) {                                                 \
+				if (__i > 0) {                                                     \
+					_wrapper_print(L"    ");                                       \
+					while(__plast != __pcur) {                                     \
+						if (isprint(*__plast)) {                                   \
+							_wrapper_print(L"%c", *__plast);                       \
+						} else {                                                   \
+							_wrapper_print(L".");                                  \
+						}                                                          \
+						__plast ++;                                                \
+					}                                                              \
+				}                                                                  \
+				_wrapper_print(L"\n0x%08x", __i);                                  \
+			}                                                                      \
+			_wrapper_print(L" 0x%02x",*__pcur);                                    \
+			__pcur ++;                                                             \
+		}                                                                          \
+		if (__plast != __pcur) {                                                   \
+			while((__i % 16)) {                                                    \
+				_wrapper_print(L"     ");                                          \
+				__i ++;                                                            \
+			}                                                                      \
+			_wrapper_print(L"    ");                                               \
+			while(__plast != __pcur) {                                             \
+				if (isprint(*__plast)) {                                           \
+					_wrapper_print(L"%c", *__plast);                               \
+				} else {                                                           \
+					_wrapper_print(L".");                                          \
+				}                                                                  \
+				__plast ++;                                                        \
+			}                                                                      \
+		}                                                                          \
+		_wrapper_print(L"\n");                                                     \
+	}while(0)
+
+#define LOG_BUFFER(level,ptr,size)                                                 \
+	do{                                                                            \
+		__LOG_BUFFER_FMT(level,ptr,size);                                          \
+	}while(0)
+
+
+#define  DEBUG_BUFFER(ptr,size)                  LOG_BUFFER(3,ptr,size)
+
+
 
 #define ERR_PRT(a)	do { _wrapper_print(L"%a(line %d):", __FILE__, __LINE__); _wrapper_print a; _wrapper_print(L"\n"); } while (0);
 

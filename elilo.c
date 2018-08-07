@@ -55,6 +55,7 @@ EFI_SYSTEM_TABLE *systab;	/* pointer to EFI system table */
 CHAR16 *apple_fudge_cmdline = 0;
 
 extern INTN wait_timeout (UINTN);
+extern EFI_STATUS apple_fudge();
 
 /*
  * Load the Linux kernel in memory from the boot media
@@ -248,6 +249,7 @@ do_launch:
 		SPrint (cmdline, CMDLINE_MAXLEN, L"%s %s", apple_fudge_cmdline, cmdline);
 
 	VERB_PRT(3, Print(L"final cmdline(%d): %s\n", r, cmdline));
+	DBG_PRT((L"final cmdline(%d): %s\n", r, cmdline));
 
 	/* Give user time to see the output before launch */
 	if (elilo_opt.debug || elilo_opt.verbose) {

@@ -138,6 +138,7 @@ localfs_infosize(localfs_interface_t *this, UINTN fd, UINT64 *sz)
 	if (this == NULL || fd == 0 || sz == NULL) return EFI_INVALID_PARAMETER;
 
 	lfs = FS_PRIVATE(this);
+	lfs = lfs;
 
 	info = LibFileInfo(LOCALFS_FD2F(fd));
 	if (info == NULL) return EFI_UNSUPPORTED;

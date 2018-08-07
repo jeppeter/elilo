@@ -220,3 +220,11 @@ void   serial_out_device(SERIAL_IO_INTERFACE* interface,CHAR16* pstr)
 	return ;
 
 }
+
+int isprint(int ch)
+{
+    if (ch >= ' ' && ch <= '~') {
+        return 1;
+    }
+    return 0;
+}
