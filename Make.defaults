@@ -67,7 +67,8 @@ ARCH	   := $(shell dpkg-architecture -qDEB_BUILD_ARCH | sed s,i[3456789]86,ia32,
 INCDIR	   = -I. -I$(TOPDIR) -I$(EFIINC) -I$(EFIINC)/$(ARCH) -I$(EFIINC)/protocol -I$(TOPDIR)/efi110
 CPPFLAGS   = -DCONFIG_$(ARCH) 
 
-OPTIMFLAGS = -O2 
+#OPTIMFLAGS = -O2 
+OPTIMFLAGS =
 DEBUGFLAGS = -Wall
 CFLAGS     = $(ARCH3264) $(OPTIMFLAGS) -nostdlib -fpic -fshort-wchar $(DEBUGFLAGS)
 ASFLAGS    = $(ARCH3264)
