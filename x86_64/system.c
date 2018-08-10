@@ -444,6 +444,46 @@ static int e820_max = 6;
 static int e820_max = E820_MAX;
 #endif
 
+const CHAR16* get_memtype(unsigned int type)
+{
+	static CHAR16 typestr[50];
+	switch(type){
+		case EfiReservedMemoryType:
+			return L"EfiReservedMemoryType";
+		case EfiLoaderCode:
+			return L"EfiLoaderCode";
+		case EfiLoaderData:
+			return L"EfiLoaderData";
+		case EfiBootServicesCode:
+			return L"EfiBootServicesCode";
+		case EfiBootServicesData:
+			return L"EfiBootServicesData";
+		case EfiRuntimeServicesCode:
+			return L"EfiRuntimeServicesCode";
+		case EfiRuntimeServicesData:
+			return L"EfiRuntimeServicesData";
+		case EfiConventionalMemory:
+			return L"EfiConventionalMemory";
+		case EfiUnusableMemory:
+			return L"EfiUnusableMemory";
+		case EfiACPIReclaimMemory:
+			return L"EfiACPIReclaimMemory";
+		case EfiACPIMemoryNVS:
+			return L"EfiACPIMemoryNVS";
+		case EfiMemoryMappedIO:
+			return L"EfiMemoryMappedIO";
+		case EfiMemoryMappedIOPortSpace:
+			return L"EfiMemoryMappedIOPortSpace";
+		case EfiPalCode:
+			return L"EfiPalCode";
+		case EfiMaxMemoryType:
+			return L"EfiMaxMemoryType";
+	}
+
+	SPrint(typestr,50,L"unknown type %d",type);
+	return typestr;
+}
+
 /* Add a memory region to the e820 map */
 static void add_memory_region (struct e820entry *e820_map,
 			       int *e820_nr_map,
@@ -464,6 +504,8 @@ static void add_memory_region (struct e820entry *e820_map,
 	/* merge adjacent regions of same type */
 	if ((x > 0) && e820_map[x-1].addr + e820_map[x-1].size == start
 	    && e820_map[x-1].type == type) {
+		DBG_PRT((L"AMR [%d] estart [0x%llx] size [0x%llx] => [0x%llx] type [%s]", x- 1, e820_map[x-1].addr, e820_map[x-1].size , (e820_map[x-1].size + size),
+			get_memtype(e820_map[x-1].type)));
 		e820_map[x-1].size += size;
 		estart = e820_map[x-1].addr;
 		esize  = e820_map[x-1].size;
@@ -476,6 +518,8 @@ static void add_memory_region (struct e820entry *e820_map,
 		e820_map[x].addr = start;
 		e820_map[x].size = size;
 		e820_map[x].type = type;
+		DBG_PRT((L"AMR add [%d] start [0x%llx] size [0x%llx] type [0x%x][%s]", x, e820_map[x].addr,e820_map[x].size,e820_map[x].type,
+			get_memtype(e820_map[x].type)));
 		(*e820_nr_map)++;
 		if (merge) DPR((L"AMR: %3d ==>  %016llx/%012lx/%d (%d)\n",
 				x-1, estart, esize, etype, merge));
@@ -494,6 +538,8 @@ static void add_memory_region (struct e820entry *e820_map,
 		esize = size;
 		etype = type;
 		e820_map_overflow++;
+		DBG_PRT((L"AMR overfloat estart [0x%llx] esize [0x%llx] etype[%d] [%s]",
+			estart, esize,etype,get_memtype(etype)));
 		DPR((L"AMR: %3d OVER %016llx/%012lx/%d\n",
 			 e820_map_overflow, start, size, type));
 		return;
@@ -513,10 +559,14 @@ void fill_e820map(boot_params_t *bp, mmap_desc_t *mdesc)
 
 	nr_map = mdesc->map_size/mdesc->desc_size;
 	e820_map = (struct e820entry *)bp->s.e820_map;
-			
+	
+	DBG_PRT((L"desc_size [%d]", mdesc->desc_size));
+	DEBUG_BUFFER(mdesc->md, mdesc->map_size);
 	for (i = 0, p = mdesc->md; i < nr_map; i++)
 	{
 		md = p;
+		DBG_PRT((L"[%d]type[%d:0x%x] PhysicalStart ["PTR_FMT"] NumberOfPages %d", i, md->Type,md->Type,
+			md->PhysicalStart, (UINT32)md->NumberOfPages));
 		switch (md->Type) {
 		case EfiACPIReclaimMemory:
 			add_memory_region(e820_map, &e820_nr_map,
