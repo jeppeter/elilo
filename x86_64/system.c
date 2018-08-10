@@ -1004,8 +1004,9 @@ void start_kernel(VOID *kentry, boot_params_t *bp)
 	DBG_PRT((L"kernel_start @"PTR_FMT" kernel_load_address @"PTR_FMT " kernel_size %d[0x%x]", 
 			kernel_start, kernel_load_address, kernel_size, kernel_size));
 	DBG_PRT((L"high_base_mem @"PTR_FMT, high_base_mem));
-	//DEBUG_BUFFER(&gdt_addr, sizeof(gdt_addr));
-	//DEBUG_BUFFER(init_gdt, sizeof_init_gdt);
+	DEBUG_BUFFER(&gdt_addr, sizeof(gdt_addr));
+	DEBUG_BUFFER(init_gdt, sizeof_init_gdt);
+	DEBUG_BUFFER(&idt_addr, sizeof(idt_addr));
 	if (kernel_start != kernel_load_address) {
 		MEMCPY(kernel_start, kernel_load_address, kernel_size);
 	}

@@ -206,6 +206,7 @@ static UINTN buf_max, buf_pos;
 
 static fops_fd_t config_fd;
 
+#if 0
 static VOID 
 config_error(CHAR16 *msg,...)
 {
@@ -213,6 +214,9 @@ config_error(CHAR16 *msg,...)
     IPrint(systab->ConOut, msg);
     Print(L"\n");
 }
+#else
+#define config_error(...)   ERR_PRT((__VA_ARGS__))
+#endif
 
 /*
  * low level read routine
@@ -770,6 +774,7 @@ config_parse(VOID)
 		tok = get_token(str, MAX_STRING);
 
 		if (tok == TOK_EOF) break;
+		DBG_PRT((L"tok %d str [%s]", tok , str));
 
 		if (tok == TOK_ERR) {
 			Print(L"Bad Token from elilo config file, parser read: %s\n elilo exiting\n", str);
@@ -777,7 +782,7 @@ config_parse(VOID)
 		}
 
 		if ( (p = find_option(current_options, str)) == NULL) {
-			config_error(L"Unkown option %s", str);
+			config_error(L"Unknown option %s", str);
 			return -1;
 		}
 

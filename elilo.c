@@ -294,7 +294,7 @@ retry:
 			goto bad_exit;
 		}
 	}
-
+	//DEBUG_BUFFER(kernel_load_address, 0x200);
 
 	start_kernel(kd.kentry, bp);
 	/* NOT REACHED */
@@ -642,7 +642,7 @@ efi_main (EFI_HANDLE image, EFI_SYSTEM_TABLE *system_tab)
 				 */
 				if (sysdeps_getopt(c, Optind, Optarg) == 0) continue;
 
-				Print(L"Unknown option -%c\n", (CHAR16)c);
+				ERR_PRT((L"Unknown option -%c\n", (CHAR16)c));
 				goto do_exit;
 		}
 	}
