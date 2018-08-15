@@ -448,36 +448,16 @@ const CHAR16* get_memtype(unsigned int type)
 {
 	static CHAR16 typestr[50];
 	switch(type){
-		case EfiReservedMemoryType:
-			return L"EfiReservedMemoryType";
-		case EfiLoaderCode:
-			return L"EfiLoaderCode";
-		case EfiLoaderData:
-			return L"EfiLoaderData";
-		case EfiBootServicesCode:
-			return L"EfiBootServicesCode";
-		case EfiBootServicesData:
-			return L"EfiBootServicesData";
-		case EfiRuntimeServicesCode:
-			return L"EfiRuntimeServicesCode";
-		case EfiRuntimeServicesData:
-			return L"EfiRuntimeServicesData";
-		case EfiConventionalMemory:
-			return L"EfiConventionalMemory";
-		case EfiUnusableMemory:
-			return L"EfiUnusableMemory";
-		case EfiACPIReclaimMemory:
-			return L"EfiACPIReclaimMemory";
-		case EfiACPIMemoryNVS:
-			return L"EfiACPIMemoryNVS";
-		case EfiMemoryMappedIO:
-			return L"EfiMemoryMappedIO";
-		case EfiMemoryMappedIOPortSpace:
-			return L"EfiMemoryMappedIOPortSpace";
-		case EfiPalCode:
-			return L"EfiPalCode";
-		case EfiMaxMemoryType:
-			return L"EfiMaxMemoryType";
+		case E820_RAM:
+			return L"E820_RAM";
+		case E820_RESERVED:
+			return L"E820_RESERVED";
+		case E820_ACPI:
+			return L"E820_ACPI";
+		case E820_NVS:
+			return L"E820_NVS";
+		case E820_EXEC_CODE:
+			return L"E820_EXEC_CODE";
 	}
 
 	SPrint(typestr,50,L"unknown type %d",type);

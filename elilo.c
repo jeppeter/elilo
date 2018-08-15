@@ -213,6 +213,7 @@ main_loop(EFI_HANDLE dev, CHAR16 **argv, INTN argc, INTN index, EFI_HANDLE image
 	CHAR16 cmdline_tmp[CMDLINE_MAXLEN];
 	CHAR16 cmdline[CMDLINE_MAXLEN];
 	VOID *bp;
+	boot_params_t* bp2;
 	UINTN cookie;
 	EFI_STATUS status = EFI_SUCCESS;
 	kdesc_t kd;
@@ -294,7 +295,12 @@ retry:
 			goto bad_exit;
 		}
 	}
+	bp2 = (boot_params_t*)bp;
 	//DEBUG_BUFFER(kernel_load_address, 0x200);
+	DBG_PRT((L"e820_nrmap [%d]", bp2->s.e820_nrmap));
+	DEBUG_BUFFER(bp2->s.e820_map, sizeof(struct e820entry) * bp2->s.e820_nrmap);
+	DBG_PRT((L"bp2 ptr"));
+	DEBUG_BUFFER(bp2, sizeof(*bp2));
 
 	start_kernel(kd.kentry, bp);
 	/* NOT REACHED */
