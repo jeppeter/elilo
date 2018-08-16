@@ -659,17 +659,17 @@ print_devices(VOID)
 
 		str2 = str == NULL ? L"Unknown" : str;
 
-		Print(L"%8s : %-6s : %s\n", dev_tab[idx].name,
-				(dev_tab[idx].fops ? dev_tab[idx].fops->name: L"N/A"), str2);
+		DBG_PRT((L"%8s : %-6s : %s\n", dev_tab[idx].name,
+				(dev_tab[idx].fops ? dev_tab[idx].fops->name: L"N/A"), str2));
 
 		if (str) FreePool(str);
 	}
-	Print(L"%d devices available for booting\n", ndev_boot);
+	DBG_PRT((L"%d devices available for booting\n", ndev_boot));
 
 	if (boot_dev == NULL) {
-		Print(L"boot device not detected\n");
+		DBG_PRT((L"boot device not detected\n"));
 	} else {
-		Print(L"boot device %s: %s\n", boot_dev->name,
-				(boot_dev->fops ? boot_dev->fops->name : L"No file access"));
+		DBG_PRT((L"boot device %s: %s\n", boot_dev->name,
+				(boot_dev->fops ? boot_dev->fops->name : L"No file access")));
 	}
 }

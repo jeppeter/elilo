@@ -297,11 +297,12 @@ retry:
 	}
 	bp2 = (boot_params_t*)bp;
 	//DEBUG_BUFFER(kernel_load_address, 0x200);
+#if 0	
 	DBG_PRT((L"e820_nrmap [%d]", bp2->s.e820_nrmap));
 	DEBUG_BUFFER(bp2->s.e820_map, sizeof(struct e820entry) * bp2->s.e820_nrmap);
 	DBG_PRT((L"bp2 ptr"));
 	DEBUG_BUFFER(bp2, sizeof(*bp2));
-
+#endif
 	start_kernel(kd.kentry, bp);
 	/* NOT REACHED */
 
