@@ -795,6 +795,7 @@ sysdeps_create_boot_params(
 	 *   include/asm-x86_64/setup.h (2.5/2.6)
 	 */
 
+#if 0
 #define CHECK_OFFSET(n, o, f) \
 { \
 	UINTN p = (UINT8 *)&bp->s.n - (UINT8 *)bp; \
@@ -808,6 +809,19 @@ sysdeps_create_boot_params(
 		Print(L"\n"); \
 	} \
 }
+#endif
+
+#define CHECK_OFFSET(n, o, f)                                            \
+   do {                                                                  \
+   	UINTN p = (UINT8*) &(bp->s.n) - (UINT8*) bp;                         \
+   	DBG_PRT((L"%20a:  %3xh %3xh %xh", #n, p, (UINTN)(o), bp->s.n));      \
+   } while(0)
+
+#define CHECK_LOAD_SIG(n,o,f)                                            \
+   do {                                                                  \
+   	UINTN p = (UINT8*) &(bp->s.n) - (UINT8*) bp;                         \
+   	DBG_PRT((L"%20a:  %3xh %3xh '%-4.4a'", #n, p, (UINTN)(o), bp->s.n)); \
+   }while(0)
 
 #define WAIT_FOR_KEY() \
 { \
@@ -820,6 +834,7 @@ sysdeps_create_boot_params(
 		UINTN test = 0;
 
 		CHECK_OFFSET(orig_cursor_col, 0x00, L"%xh");
+		//DBG_PRT((L"%20a: %3xh %3xh %xh", "orig_cursor_col", (UINT8*)&(bp->s.orig_cursor_col) - (UINT8*)bp, 0x0, bp->s.orig_cursor_col));
 		CHECK_OFFSET(orig_cursor_row, 0x01, L"%xh");
 		CHECK_OFFSET(ext_mem_k, 0x02, L"%xh");
 		CHECK_OFFSET(orig_video_page, 0x04, L"%xh");
@@ -877,7 +892,8 @@ sysdeps_create_boot_params(
 		CHECK_OFFSET(orig_root_dev, 0x1FC, L"%xh");
 		CHECK_OFFSET(boot_flag, 0x1FE, L"%xh");
 		CHECK_OFFSET(jump, 0x200, L"%xh");
-		CHECK_OFFSET(setup_sig, 0x202, L"'%-4.4a'");
+		//CHECK_OFFSET(setup_sig, 0x202, L"'%-4.4a'");
+		CHECK_LOAD_SIG(setup_sig, 0x202, L"'%-4.4a'");
 		CHECK_OFFSET(hdr_minor, 0x206, L"%xh");
 		CHECK_OFFSET(hdr_major, 0x207, L"%xh");
 		CHECK_OFFSET(rm_switch, 0x208, L"%xh");
