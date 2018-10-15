@@ -36,6 +36,7 @@ StrChr(IN const CHAR16 *s, IN const CHAR16 c)
         return (CHAR16 *)s;
 }
 
+#if 0
 CHAR16 *
 StrnCpy(OUT CHAR16 *dst, IN const CHAR16 *src, IN UINTN size)
 {
@@ -49,6 +50,7 @@ StrnCpy(OUT CHAR16 *dst, IN const CHAR16 *src, IN UINTN size)
 
 	return res;
 }
+#endif
 
 CHAR8 *
 StrnXCpy(OUT CHAR8 *dst, IN const CHAR16 *src, IN UINTN size)

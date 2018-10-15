@@ -27,7 +27,7 @@
 #define __STROPS_H__
 
 extern CHAR16 *StrChr(IN const CHAR16 *s, const CHAR16 c);
-extern CHAR16 *StrnCpy(OUT CHAR16 *dst, IN const CHAR16 *src, UINTN count);
+//extern CHAR16 *StrnCpy(OUT CHAR16 *dst, IN const CHAR16 *src, UINTN count);
 extern CHAR8 *StrnXCpy(OUT CHAR8 *dst, IN const CHAR16 *src, UINTN count);
 
 extern CHAR8 *strtok_simple(CHAR8 *in, CHAR8 c);
